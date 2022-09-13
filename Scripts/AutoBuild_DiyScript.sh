@@ -5,13 +5,13 @@
 Firmware_Diy_Core() {
 
 	Author=AUTO
-	Author_URL=AUTO
+	Author_URL=https://www.115115.xyz/
 	Default_Flag=AUTO
-	Default_IP="192.168.1.1"
-	Default_Title="Powered by AutoBuild-Actions"
+	Default_IP="192.168.2.200"
+	Default_Title="Powered by X-OpenWrt"
 
 	Short_Fw_Date=true
-	x86_Full_Images=false
+	x86_Full_Images=true
 	Fw_Format=false
 	Regex_Skip="packages|buildinfo|sha256sums|manifest|kernel|rootfs|factory|itb|profile|ext4|json"
 
@@ -77,8 +77,12 @@ EOF
 		done ; unset i
 
 		AddPackage svn apps minieap immortalwrt/packages/branches/openwrt-18.06/net
+		AddPackage git other luci-theme-atmaterial-ColorIcon esirplayground master
 		AddPackage git lean luci-app-argon-config jerrykuku master
 		AddPackage git other OpenClash vernesong master
+		AddPackage git other luci-app-vssr jerrykuku master
+		AddPackage git other lua-maxminddb jerrykuku master
+		AddPackage git other luci-theme-neobird thinktip main
 		AddPackage git other luci-app-ikoolproxy iwrt main
 		AddPackage git other helloworld fw876 master
 		# sed -i 's/143/143,8080,8443,6969,1337/' $(PKG_Finder d package luci-app-ssr-plus)/root/etc/init.d/shadowsocksr
@@ -107,6 +111,7 @@ EOF
 			Copy ${CustomFiles}/Depends/cpuset ${BASE_FILES}/bin
 			AddPackage git passwall-depends openwrt-passwall xiaorouji packages
 			AddPackage git passwall-luci openwrt-passwall xiaorouji luci
+			AddPackage git other luci-app-dockerman lisaac master
 			rm -rf packages/lean/autocore
 			AddPackage git lean autocore-modify Hyy2001X master
 			sed -i -- 's:/bin/ash:'/bin/bash':g' ${BASE_FILES}/etc/passwd
