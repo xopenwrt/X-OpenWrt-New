@@ -58,7 +58,7 @@ env:
 
 jobs:
   Compile:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
     - name: Maximize Build Space
       uses: easimon/maximize-build-space@master
@@ -67,6 +67,7 @@ jobs:
         swap-size-mb: 512
         remove-dotnet: 'true'
         remove-android: 'true'
+        remove-haskell: 'true'
 
     - name: Get current date & Set env
       id: date
@@ -80,7 +81,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Initialization Variables
+    - name: Load Custom Variables
       run: |
         echo "Free space:"
         df -h
@@ -97,7 +98,7 @@ jobs:
         fi
         if [ ! -f "$GITHUB_WORKSPACE/Configs/$CONFIG_FILE" ]
         then
-            echo "CONFIG_FILE: [/Config/$CONFIG_FILE] is not detected !"
+            echo "CONFIG_FILE: [/Config/$CONFIG_FILE] is not detected ..."
             exit 1
         else
             echo "CONFIG_FILE: [/Config/$CONFIG_FILE]"
@@ -112,11 +113,9 @@ jobs:
         then
             echo "FLAG: [${{ github.event.inputs.Tempoary_FLAG }}]"
             echo "Tempoary_FLAG=${{ github.event.inputs.Tempoary_FLAG }}" >> $GITHUB_ENV
-        else
-            echo "env Tempoary_FLAG is not detected !"
         fi
-        REPO_URL="https://github.com/$(echo ${{ env.DEFAULT_SOURCE }} | cut -d \: -f 1)"
-        REPO_BRANCH=$(echo ${{ env.DEFAULT_SOURCE }} | cut -d \: -f 2)
+        REPO_URL="https://github.com/$(cut -d \: -f 1 <<< ${{ env.DEFAULT_SOURCE }})"
+        REPO_BRANCH=$(cut -d \: -f 2 <<< ${{ env.DEFAULT_SOURCE }})
         echo "REPO_URL=$REPO_URL" >> $GITHUB_ENV
         echo "REPO_BRANCH=$REPO_BRANCH" >> $GITHUB_ENV
         echo "Compile_Date=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
@@ -133,7 +132,7 @@ jobs:
         sudo chown $USER:$GROUPS /workdir
         if [ "${{ env.DELETE_USELESS_FILES }}" == true ]
         then
-            docker rmi node:12-alpine node:14-alpine node:16-alpine alpine:3.12 alpine:3.13 alpine:3.14 moby/buildkit:latest node:16 node:12 node:14 ubuntu:20.04 buildpack-deps:stretch buildpack-deps:buster buildpack-deps:bullseye debian:9 debian:10 debian:11 ubuntu:18.04 ubuntu:16.04 
+            docker rmi $(docker images -q)
             sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php
             sudo -E apt-get -y autoremove --purge
             sudo -E apt-get clean
@@ -144,12 +143,14 @@ jobs:
         git clone -b $REPO_BRANCH $REPO_URL openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
-    - name: Cache
+    - name: Accelerate
+      if: env.CACHE_ACCELERATE == 'true'
       uses: klever1988/cachewrtbuild@main
       with:
-        ccache: 'true'
+        ccache: false
         toolchain: true
-        #clean: true
+        skip: true
+        clean: false
         prefix: ${{ github.workspace }}/openwrt
 
     - name: Feeds install
@@ -158,32 +159,39 @@ jobs:
         ./scripts/feeds update -a
         ./scripts/feeds install -a
         ./scripts/feeds uninstall luci-theme-argon
-        sed -i 's/^\s*$[(]call\sEnsureVendoredVersion/#&/' $GITHUB_WORKSPACE/openwrt/feeds/packages/utils/dockerd/Makefile
+#        sed -i 's/^\s*$[(]call\sEnsureVendoredVersion/#&/' $GITHUB_WORKSPACE/openwrt/feeds/packages/utils/dockerd/Makefile
 #fix dockerd bug
 
-    - name: Run AutoBuild_DiyScript.sh
+    - name: Run Diy Scripts
       run: |
         chmod +x Scripts/AutoBuild_*.sh
-        cp $GITHUB_WORKSPACE/Configs/$CONFIG_FILE openwrt/.config
         cd openwrt
-        make defconfig
+        if [ "${{ env.CACHE_ACCELERATE }}" == true ]
+        then
+            echo -e "\nCONFIG_DEVEL=y\nCONFIG_CCACHE=y\n" >> $GITHUB_WORKSPACE/Configs/$CONFIG_FILE
+        fi
+        cp $GITHUB_WORKSPACE/Configs/$CONFIG_FILE .config
         source $GITHUB_WORKSPACE/Scripts/AutoBuild_DiyScript.sh
         source $GITHUB_WORKSPACE/Scripts/AutoBuild_Function.sh
+        make defconfig
         Firmware_Diy_Before
-        rm .config && cp $GITHUB_WORKSPACE/Configs/$CONFIG_FILE .config
+        rm -f .config && cp $GITHUB_WORKSPACE/Configs/$CONFIG_FILE .config
         Firmware_Diy_Main
         Firmware_Diy
+        Firmware_Diy_Other
 
-    - name: Compile
+    - name: Pre-download Libraries
       run: |
         cd openwrt
-        source $GITHUB_WORKSPACE/Scripts/AutoBuild_Function.sh
-        Firmware_Diy_Other
-        ./scripts/feeds install -a > /dev/null 2>&1
+        ./scripts/feeds install -a
         make defconfig
-        make download -j$(nproc)
-        make -j$(nproc) || make -j1 V=s
-        [ $? == 0 ] && echo "Result=true" >> $GITHUB_ENV || echo "Result=false" >> $GITHUB_ENV
+        make download -j8
+
+    - name: Build OpenWrt
+      run: |
+        cd openwrt
+        make -j4 || make -j1 V=s
+        [ "$?" == 0 ] && echo "Compile_Result=true" >> $GITHUB_ENV || echo "Compile_Result=false" >> $GITHUB_ENV
 
     - name: Process Firmware
       if: env.Result == 'true' && !cancelled()
