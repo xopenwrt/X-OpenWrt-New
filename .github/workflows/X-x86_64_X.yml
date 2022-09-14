@@ -62,15 +62,6 @@ jobs:
   Compile:
     runs-on: ubuntu-20.04
     steps:
-    - name: Maximize Build Space
-      uses: easimon/maximize-build-space@master
-      with:
-        root-reserve-mb: 5120
-        swap-size-mb: 512
-        remove-dotnet: 'true'
-        remove-android: 'true'
-        remove-haskell: 'true'
-
     - name: Get current date & Set env
       id: date
       run: |
@@ -139,6 +130,15 @@ jobs:
             sudo -E apt-get -y autoremove --purge
             sudo -E apt-get clean
         fi
+
+    - name: Maximize Build Space
+      uses: easimon/maximize-build-space@master
+      with:
+        root-reserve-mb: 512
+        swap-size-mb: 0
+        remove-dotnet: 'true'
+        remove-android: 'true'
+        remove-haskell: 'true'
 
     - name: Clone Openwrt Source Code
       run: |
