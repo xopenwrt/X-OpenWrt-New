@@ -70,7 +70,7 @@ EOF
 		# sed -i 's/luci-theme-bootstrap/luci-theme-argon-mod/g' feeds/luci/collections/luci/Makefile
 		# sed -i '/uci commit luci/i\uci set luci.main.mediaurlbase="/luci-static/argon-mod"' $(PKG_Finder d package default-settings)/files/zzz-default-settings
 		
-		for i in smartdns eqos mentohust minieap unblockneteasemusic
+		for i in eqos mentohust minieap unblockneteasemusic
 		do
 			AddPackage svn apps luci-app-${i} immortalwrt/luci/branches/openwrt-18.06/applications
 			sed -i 's/..\/..\//\$\(TOPDIR\)\/feeds\/luci\//g' ${WORK}/package/apps/luci-app-${i}/Makefile
@@ -85,6 +85,7 @@ EOF
 		AddPackage git other luci-theme-neobird thinktip main
 		AddPackage git other luci-app-ikoolproxy iwrt main
 		AddPackage git other helloworld fw876 master
+		AddPackage git other luci-app-smartdns pymumu lede
 		# sed -i 's/143/143,8080,8443,6969,1337/' $(PKG_Finder d package luci-app-ssr-plus)/root/etc/init.d/shadowsocksr
 		
 		for x in $(ls -1 ${CustomFiles}/Patches/luci-app-shadowsocksr)
@@ -94,6 +95,7 @@ EOF
 		
 		patch < ${CustomFiles}/Patches/fix_coremark.patch -p1 -d ${WORK}
 		patch < ${CustomFiles}/Patches/fix_aria2_auto_create_download_path.patch -p1 -d ${WORK}
+		patch < ${CustomFiles}/Patches/fix_luci-app-autoreboot-generic.patch -p1 -d ${WORK}
 
 		case "${TARGET_BOARD}" in
 		ramips)
@@ -115,6 +117,7 @@ EOF
 			rm -rf packages/lean/autocore
 			AddPackage git lean autocore-modify Hyy2001X master
 			sed -i -- 's:/bin/ash:'/bin/bash':g' ${BASE_FILES}/etc/passwd
+			#sed -i "s?6.0?5.19?g" ${WORK}/target/linux/x86/Makefile
 			# patch < ${CustomFiles}/Patches/upgrade_intel_igpu_drv.patch -p1 -d ${WORK}
 		;;
 		esac
