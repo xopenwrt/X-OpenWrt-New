@@ -1,0 +1,73 @@
+# # 挂载WebDav
+# CONFIG_PACKAGE_davfs2=y
+# # Smart DNS
+# CONFIG_PACKAGE_smartdns=y
+# CONFIG_PACKAGE_luci-app-smartdns=y
+# CONFIG_PACKAGE_luci-i18n-smartdns-zh-cn=y
+# Kernel 5.4
+# CONFIG_TESTING_KERNEL=y
+
+# wifi
+# 7625d Adapter
+CONFIG_PACKAGE_iwlwifi-firmware-iwl7265d=y
+# Intel 3168 Adapter
+CONFIG_PACKAGE_iwlwifi-firmware-iwl3168=y
+CONFIG_PACKAGE_kmod-iwlwifi=y
+CONFIG_PACKAGE_hostapd=y
+CONFIG_PACKAGE_hostapd-common=y
+CONFIG_PACKAGE_wpa-supplicant=y
+
+# Theme
+CONFIG_PACKAGE_luci-theme-atmaterial-ColorIcon=y
+# CONFIG_PACKAGE_luci-theme-edge=y
+# # CONFIG_PACKAGE_luci-theme-argon is not set
+# CONFIG_PACKAGE_luci-theme-argon-mod=y
+# CONFIG_PACKAGE_luci-theme-neobird=y
+# passwall
+# CONFIG_PACKAGE_luci-app-passwall=y
+# # Adguard Home
+# CONFIG_PACKAGE_luci-app-adguardhome=y
+# # Dnsmasq 及IPV6,AutoUpdate
+# CONFIG_PACKAGE_dnsmasq-full=y
+# CONFIG_PACKAGE_dnsmasq_full_dhcp=y
+# CONFIG_PACKAGE_dnsmasq_full_dhcpv6=y
+# CONFIG_PACKAGE_luci-app-autoupdate=y
+# Netdata
+# CONFIG_PACKAGE_luci-app-netdata=y
+# # Diskman
+# CONFIG_PACKAGE_luci-app-diskman=y
+# CONFIG_PACKAGE_luci-app-diskman_INCLUDE_btrfs_progs=y
+# CONFIG_PACKAGE_luci-app-diskman_INCLUDE_lsblk=y
+# CONFIG_PACKAGE_luci-app-diskman_INCLUDE_mdadm=y
+
+CONFIG_TARGET_x86=y
+CONFIG_TARGET_x86_64=y
+CONFIG_TARGET_x86_64_DEVICE_generic=y
+
+CONFIG_GRUB_IMAGES=y
+CONFIG_VMDK_IMAGES=y
+CONFIG_VDI_IMAGES=y
+CONFIG_VHDX_IMAGES=y
+CONFIG_GRUB_TITLE="OpenWrt for x86_64-Z & Powered by Xinb"
+CONFIG_TARGET_KERNEL_PARTSIZE=32
+CONFIG_TARGET_ROOTFS_PARTSIZE=800
+# CONFIG_GRUB_CONSOLE is not set
+# CONFIG_TARGET_IMAGES_GZIP=y
+# CONFIG_PACKAGE_ntfs3-mount=y
+
+# CONFIG_SIGNATURE_CHECK is not set
+# CONFIG_SIGNED_PACKAGES is not set
+# CONFIG_PACKAGE_luci-app-unblockmusic is not set
+# CONFIG_PACKAGE_luci-app-unblockmusic_INCLUDE_UnblockNeteaseMusic_Go is not set
+# CONFIG_PACKAGE_luci-app-unblockmusic_INCLUDE_UnblockNeteaseMusic_NodeJS is not set
+# CONFIG_PACKAGE_luci-app-adbyby-plus is not set
+# CONFIG_PACKAGE_adbyby is not set
+# CONFIG_PACKAGE_luci-app-wireguard is not set
+# CONFIG_PACKAGE_luci-app-ssr-plus is not set
+# CONFIG_PACKAGE_luci-app-wol is not set
+# CONFIG_PACKAGE_luci-app-xlnetacc is not set
+# CONFIG_PACKAGE_luci-app-upnp is not set
+# CONFIG_PACKAGE_luci-app-qbittorrent is not set
+# CONFIG_PACKAGE_luci-app-vsftpd is not set
+# CONFIG_PACKAGE_luci-app-samba is not set
+# CONFIG_PACKAGE_autosamba is not set
