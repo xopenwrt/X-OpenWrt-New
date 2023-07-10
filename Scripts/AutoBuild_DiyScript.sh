@@ -119,7 +119,7 @@ EOF
 			sed -i -- 's:/bin/ash:'/bin/bash':g' ${BASE_FILES}/etc/passwd
 			#sed -i "s?6.0?5.19?g" ${WORK}/target/linux/x86/Makefile
 			# patch < ${CustomFiles}/Patches/upgrade_intel_igpu_drv.patch -p1 -d ${WORK}
-			#patch < ${CustomFiles}/Patches/fix_mac80211.patch -p1 -d ${WORK}
+			patch < ${CustomFiles}/Patches/fix_mac80211.patch -p1 -d ${WORK}
 		;;
 		esac
 	;;
