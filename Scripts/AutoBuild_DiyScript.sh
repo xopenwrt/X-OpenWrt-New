@@ -114,14 +114,14 @@ EOF
 			AddPackage git passwall-depends openwrt-passwall xiaorouji packages
 			AddPackage git passwall-luci openwrt-passwall xiaorouji luci
 			AddPackage git other luci-app-dockerman lisaac master
-			rm -rf packages/lean/autocore
+			rm -rf packages/lean/autocore # May Can Delete
 			AddPackage git lean autocore-modify xopenwrt master
 			sed -i -- 's:/bin/ash:'/bin/bash':g' ${BASE_FILES}/etc/passwd
 			#sed -i "s?6.0?5.19?g" ${WORK}/target/linux/x86/Makefile
 			# patch < ${CustomFiles}/Patches/upgrade_intel_igpu_drv.patch -p1 -d ${WORK}
 			patch < ${CustomFiles}/Patches/fix_mac80211.patch -p1 -d ${WORK}
 			#fix hostapd
-			sed -i "s/\#CONFIG_AP/CONFIG_AP/g" openwrt/package/network/services/hostapd/files/wpa*
+			sed -i "s/\#CONFIG_AP/CONFIG_AP/g" ${WORK}/package/network/services/hostapd/files/wpa*
 		;;
 		esac
 	;;
