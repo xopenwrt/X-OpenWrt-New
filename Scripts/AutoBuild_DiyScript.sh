@@ -123,7 +123,7 @@ EOF
 			#fix hostapd
 			rm -rf package/network/services/hostapd/*
 			wget https://github.com/coolsnowwolf/lede/archive/2b5fdd941cc4047374fb3ac03c6fdac2f6baa8f8.zip
-			unzip 2b
+			unzip 2b5fdd941cc4047374fb3ac03c6fdac2f6baa8f8.zip
 			cp lede-2b5fdd941cc4047374fb3ac03c6fdac2f6baa8f8/package/network/services/hostapd/* package/network/services/hostapd -r
 			rm lede-2b5fdd941cc4047374fb3ac03c6fdac2f6baa8f8 -rf
 			rm 2b5fdd941cc4047374fb3ac03c6fdac2f6baa8f8.zip -rf
