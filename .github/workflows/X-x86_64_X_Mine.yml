@@ -192,7 +192,7 @@ jobs:
     - name: Build OpenWrt
       run: |
         cd openwrt
-        make -j4 || make -j1 V=s
+        make -j8 || make -j1 V=s
         [ "$?" == 0 ] && echo "Result=true" >> $GITHUB_ENV || echo "Result=false" >> $GITHUB_ENV
 
     - name: Process Firmware
