@@ -63,7 +63,6 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     - name: Test
-      id: date
       run: |
         docker images
         
