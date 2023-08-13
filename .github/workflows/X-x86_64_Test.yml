@@ -62,6 +62,11 @@ jobs:
   Compile:
     runs-on: ubuntu-20.04
     steps:
+    - name: Test
+      id: date
+      run: |
+        docker images
+        
     - name: Maximize Build Space
       uses: easimon/maximize-build-space@master
       with:
