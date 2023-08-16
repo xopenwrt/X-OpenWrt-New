@@ -96,6 +96,8 @@ EOF
 		patch < ${CustomFiles}/Patches/fix_coremark.patch -p1 -d ${WORK}
 		#patch < ${CustomFiles}/Patches/fix_aria2_auto_create_download_path.patch -p1 -d ${WORK}
 		patch < ${CustomFiles}/Patches/fix_luci-app-autoreboot-generic.patch -p1 -d ${WORK}
+		# delete adguardhome in lede package
+		rm ${FEEDS_PKG}/net/adguardhome -rf
 
 		case "${TARGET_BOARD}" in
 		ramips)
