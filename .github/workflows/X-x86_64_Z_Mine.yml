@@ -1,0 +1,374 @@
+###########################################################
+#   Description: Compile OpenWrt by GitHub Actions        #
+#   Based on: https://github.com/P3TERX/Actions-OpenWrt   #
+#   Author: Xinb                                      #
+###########################################################
+
+name: x86_64_X_Mine
+
+### 以下内容请保持不变 (请修改下方的 环境变量设置)
+on:
+  repository_dispatch:
+  workflow_dispatch:
+    inputs:
+      Release:
+        description: '是否上传到Github'
+        default: 'true'
+      SharePoint:
+        description: '是否上传到SharePoint'
+        default: 'true'
+      Tempoary_IP:
+        description: '固件 IP 地址 [可选]'
+        default: '192.168.2.200'
+      Tempoary_CONFIG:
+        description: '配置文件 [可选]'
+        default: 'x86_64-Z'
+      Tempoary_FLAG:
+        description: '固件名称后缀 [可选]'
+        default: 'Z'
+### 结束
+
+  #push:
+  #  branches: 
+  #    - master
+
+  #schedule:
+  #  - cron: 0 8 * * 5
+
+  #watch:
+  #  types: [started]
+
+### 环境变量设置
+env:
+# 编译时调用的 [.config] 文件名称
+  CONFIG_FILE: x86_64-Z
+# 源码仓库:分支
+  DEFAULT_SOURCE: coolsnowwolf/lede:master
+# 上传固件到 Github Releases
+  UPLOAD_RELEASES: true
+# 上传固件到 Github Artifacts
+  UPLOAD_ARTIFACTS: false
+# 上传 bin 文件夹到 Github Artifacts
+  UPLOAD_BIN_ARTIFACTS: false
+# 删除无用文件以增加编译空间
+  DELETE_USELESS_FILES: false
+# 删除早期的 workflow 任务
+  DELETE_OLD_WORKFLOW: true
+# Cache 加速编译
+  CACHE_ACCELERATE: true
+### 结束
+
+jobs:
+  Compile:
+    runs-on: self-hosted
+    steps:
+    - name: Get current date & Set env
+      id: date
+      run: |
+        echo "::set-output name=date::$(date +'%Y-%m-%d')"
+        echo "Release=${{ github.event.inputs.Release }}" >> $GITHUB_ENV
+        echo "SharePoint=${{ github.event.inputs.SharePoint }}" >> $GITHUB_ENV
+        if [ "${{ env.DELETE_USELESS_FILES }}" == true ]
+        then
+            docker rmi node:18 node:18-alpine node:14-alpine node:16-alpine alpine:3.16 alpine:3.17 alpine:3.18 moby/buildkit:latest node:16 node:14 ubuntu:20.04 buildpack-deps:stretch buildpack-deps:buster buildpack-deps:bullseye debian:9 debian:10 debian:11 ubuntu:18.04 ubuntu:16.04 
+            sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php
+            sudo -E apt-get -y autoremove --purge
+            sudo -E apt-get clean
+        fi
+
+    # - name: Maximize Build Space
+    #   uses: easimon/maximize-build-space@master
+    #   with:
+    #     root-reserve-mb: 3500
+    #     swap-size-mb: 100
+    #     remove-dotnet: 'true'
+    #     remove-android: 'true'
+    #     remove-haskell: 'true'
+
+    - name: Checkout
+      uses: actions/checkout@main
+      with:
+        fetch-depth: 0
+
+    - name: Load Custom Variables
+      run: |
+        echo "Free space:"
+        df -h
+        if [ -n "${{ github.event.inputs.Tempoary_CONFIG }}" ]
+        then
+            if [ -f "$GITHUB_WORKSPACE/Configs/${{ github.event.inputs.Tempoary_CONFIG }}" ]
+            then
+                CONFIG_FILE=${{ github.event.inputs.Tempoary_CONFIG }}
+            else
+                CONFIG_FILE=${{ env.CONFIG_FILE }}
+            fi
+        else
+            CONFIG_FILE=${{ env.CONFIG_FILE }}
+        fi
+        if [ ! -f "$GITHUB_WORKSPACE/Configs/$CONFIG_FILE" ]
+        then
+            echo "CONFIG_FILE: [/Config/$CONFIG_FILE] is not detected ..."
+            exit 1
+        else
+            echo "CONFIG_FILE: [/Config/$CONFIG_FILE]"
+            echo "CONFIG_FILE=$CONFIG_FILE" >> $GITHUB_ENV
+        fi
+        if [ -n "${{ github.event.inputs.Tempoary_IP }}" ]
+        then
+            echo "IP: [${{ github.event.inputs.Tempoary_IP }}]"
+            echo "Tempoary_IP=${{ github.event.inputs.Tempoary_IP }}" >> $GITHUB_ENV
+        fi
+        if [ -n "${{ github.event.inputs.Tempoary_FLAG }}" ]
+        then
+            echo "FLAG: [${{ github.event.inputs.Tempoary_FLAG }}]"
+            echo "Tempoary_FLAG=${{ github.event.inputs.Tempoary_FLAG }}" >> $GITHUB_ENV
+        fi
+        REPO_URL="https://github.com/$(cut -d \: -f 1 <<< ${{ env.DEFAULT_SOURCE }})"
+        REPO_BRANCH=$(cut -d \: -f 2 <<< ${{ env.DEFAULT_SOURCE }})
+        echo "REPO_URL=$REPO_URL" >> $GITHUB_ENV
+        echo "REPO_BRANCH=$REPO_BRANCH" >> $GITHUB_ENV
+        echo "Compile_Date=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
+        echo "Display_Date=$(date +%Y/%m/%d)" >> $GITHUB_ENV
+
+    - name: Initialization Environment
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        sudo -E apt-get update
+        sudo -E apt-get -y install build-essential cmake asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc-s1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib g++-multilib p7zip p7zip-full msmtp libssl-dev texinfo libreadline-dev libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint ccache curl wget vim nano python2.7 python3 python3-pip python3-ply haveged lrzsz device-tree-compiler scons antlr3 gperf intltool mkisofs rsync
+        sudo timedatectl set-timezone "Asia/Shanghai"
+        sudo mkdir -p /workdir
+#        sudo chown $USER:$GROUPS /workdir
+
+    - name: Clone Openwrt Source Code
+      run: |
+        git clone -b $REPO_BRANCH $REPO_URL openwrt
+        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
+
+    - name: Accelerate
+      if: env.CACHE_ACCELERATE == 'true'
+      uses: klever1988/cachewrtbuild@main
+      with:
+        ccache: false
+        toolchain: true
+        skip: true
+        clean: false
+        prefix: ${{ github.workspace }}/openwrt
+
+    - name: Feeds install
+      run: |        
+        cd openwrt
+        ./scripts/feeds update -a
+        ./scripts/feeds install -a
+        ./scripts/feeds uninstall luci-theme-argon
+#        sed -i 's/^\s*$[(]call\sEnsureVendoredVersion/#&/' $GITHUB_WORKSPACE/openwrt/feeds/packages/utils/dockerd/Makefile
+#fix dockerd bug
+
+    - name: Run Diy Scripts
+      run: |
+        chmod +x Scripts/AutoBuild_*.sh
+        cd openwrt
+        if [ "${{ env.CACHE_ACCELERATE }}" == true ]
+        then
+            echo -e "\nCONFIG_DEVEL=y\nCONFIG_CCACHE=y\n" >> $GITHUB_WORKSPACE/Configs/$CONFIG_FILE
+        fi
+        cp $GITHUB_WORKSPACE/Configs/$CONFIG_FILE .config
+        source $GITHUB_WORKSPACE/Scripts/AutoBuild_DiyScript.sh
+        source $GITHUB_WORKSPACE/Scripts/AutoBuild_Function.sh
+        make defconfig
+        Firmware_Diy_Before
+        rm -f .config && cp $GITHUB_WORKSPACE/Configs/$CONFIG_FILE .config
+        Firmware_Diy_Main
+        Firmware_Diy
+        Firmware_Diy_Other
+
+    - name: Pre-download Libraries
+      run: |
+        cd openwrt
+        ./scripts/feeds install -a
+        make defconfig
+        make download -j8
+
+    - name: Build OpenWrt
+      run: |
+        cd openwrt
+        make -j8 || make -j1 V=s
+        [ "$?" == 0 ] && echo "Result=true" >> $GITHUB_ENV || echo "Result=false" >> $GITHUB_ENV
+
+    - name: Process Firmware
+      if: env.Result == 'true' && !cancelled()
+      run: |
+        cd openwrt
+        source $GITHUB_WORKSPACE/Scripts/AutoBuild_Function.sh
+        Firmware_Diy_End
+
+    - name: Upload Firmware to Artifacts
+      uses: actions/upload-artifact@main
+      if: env.UPLOAD_ARTIFACTS == 'true' && env.Result == 'true' && !cancelled()
+      with:
+        name: ${{ env.CONFIG_FILE }}_firmware_${{ env.Compile_Date }}
+        path: openwrt/bin/Firmware
+
+    - name: Upload bin to Artifacts
+      uses: actions/upload-artifact@main
+      if: env.UPLOAD_BIN_ARTIFACTS == 'true' && env.Result == 'true' && !cancelled()
+      with:
+        name: ${{ env.CONFIG_FILE }}_bin_${{ env.Compile_Date }}
+        path: openwrt/bin
+
+    - name: Download Github Release API
+      if: env.UPLOAD_RELEASES == 'true' && env.Result == 'true' && !cancelled()
+      run: |
+        wget https://api.github.com/repos/${{github.repository}}/releases/tags/AutoUpdate -O API
+        SP_UEFI_IMG_GZ=openwrt/bin/Firmware/AutoBuild-*-UEFI-*.img.gz
+        SP_UEFI_IMG_GZ=$(echo $SP_UEFI_IMG_GZ)
+        SP_UEFI_IMG_GZ=${SP_UEFI_IMG_GZ##*/}
+        SP_UEFI_VMDK=openwrt/bin/Firmware/AutoBuild-*-UEFI-*.vmdk
+        SP_UEFI_VMDK=$(echo $SP_UEFI_VMDK)
+        SP_UEFI_VMDK=${SP_UEFI_VMDK##*/}
+        SP_UEFI_VDI=openwrt/bin/Firmware/AutoBuild-*-UEFI-*.vdi
+        SP_UEFI_VDI=$(echo $SP_UEFI_VDI)
+        SP_UEFI_VDI=${SP_UEFI_VDI##*/}
+        SP_UEFI_VHDX=openwrt/bin/Firmware/AutoBuild-*-UEFI-*.vhdx
+        SP_UEFI_VHDX=$(echo $SP_UEFI_VHDX)
+        SP_UEFI_VHDX=${SP_UEFI_VHDX##*/}
+        SP_LEGACY_IMG_GZ=openwrt/bin/Firmware/AutoBuild-*-BIOS-*.img.gz
+        SP_LEGACY_IMG_GZ=$(echo $SP_LEGACY_IMG_GZ)
+        SP_LEGACY_IMG_GZ=${SP_LEGACY_IMG_GZ##*/}
+        SP_LEGACY_VMDK=openwrt/bin/Firmware/AutoBuild-*-BIOS-*.vmdk
+        SP_LEGACY_VMDK=$(echo $SP_LEGACY_VMDK)
+        SP_LEGACY_VMDK=${SP_LEGACY_VMDK##*/}
+        SP_LEGACY_VDI=openwrt/bin/Firmware/AutoBuild-*-BIOS-*.vdi
+        SP_LEGACY_VDI=$(echo $SP_LEGACY_VDI)
+        SP_LEGACY_VDI=${SP_LEGACY_VDI##*/}
+        SP_LEGACY_VHDX=openwrt/bin/Firmware/AutoBuild-*-BIOS-*.vhdx
+        SP_LEGACY_VHDX=$(echo $SP_LEGACY_VHDX)
+        SP_LEGACY_VHDX=${SP_LEGACY_VHDX##*/}
+        echo SP_UEFI_IMG_GZ=$(echo $SP_UEFI_IMG_GZ) >> $GITHUB_ENV
+        echo SP_UEFI_VMDK=$(echo $SP_UEFI_VMDK) >> $GITHUB_ENV
+        echo SP_UEFI_VDI=$(echo $SP_UEFI_VDI) >> $GITHUB_ENV
+        echo SP_UEFI_VHDX=$(echo $SP_UEFI_VHDX) >> $GITHUB_ENV
+        echo SP_LEGACY_IMG_GZ=$(echo $SP_LEGACY_IMG_GZ) >> $GITHUB_ENV
+        echo SP_LEGACY_VMDK=$(echo $SP_LEGACY_VMDK) >> $GITHUB_ENV
+        echo SP_LEGACY_VDI=$(echo $SP_LEGACY_VDI) >> $GITHUB_ENV
+        echo SP_LEGACY_VHDX=$(echo $SP_LEGACY_VHDX) >> $GITHUB_ENV
+
+    - name: 1 Upload SP_UEFI_IMG_GZ to SharePoint
+      uses: su-dont/share-point-uploader@v2.1
+      if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
+      with:
+        sp_url: https://xinbao.sharepoint.com/:f:/r/sites/OpenWrt
+        sp_username: ${{ secrets.USERNAME }}
+        sp_password: ${{ secrets.PASSWORD }}
+        sp_folder: /Shared Documents/OpenWrt/${{ steps.date.outputs.date }}
+        sp_file_name: ${{ env.SP_UEFI_IMG_GZ }}
+        file: openwrt/bin/Firmware/${{ env.SP_UEFI_IMG_GZ }}
+
+    - name: 2 Upload SP_UEFI_VMDK to SharePoint
+      uses: su-dont/share-point-uploader@v2.1
+      if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
+      with:
+        sp_url: https://xinbao.sharepoint.com/:f:/r/sites/OpenWrt
+        sp_username: ${{ secrets.USERNAME }}
+        sp_password: ${{ secrets.PASSWORD }}
+        sp_folder: /Shared Documents/OpenWrt/${{ steps.date.outputs.date }}
+        sp_file_name: ${{ env.SP_UEFI_VMDK }}
+        file: openwrt/bin/Firmware/${{ env.SP_UEFI_VMDK }}
+
+    # - name: 3 Upload SP_UEFI_VDI to SharePoint
+    #   uses: su-dont/share-point-uploader@v2.1
+    #   if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
+    #   with:
+    #     sp_url: https://xinbao.sharepoint.com/:f:/r/sites/OpenWrt
+    #     sp_username: ${{ secrets.USERNAME }}
+    #     sp_password: ${{ secrets.PASSWORD }}
+    #     sp_folder: /Shared Documents/OpenWrt/${{ steps.date.outputs.date }}
+    #     sp_file_name: ${{ env.SP_UEFI_VDI }}
+    #     file: openwrt/bin/Firmware/${{ env.SP_UEFI_VDI }}
+
+    # - name: 4 Upload SP_UEFI_VHDX to SharePoint
+    #   uses: su-dont/share-point-uploader@v2.1
+    #   if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
+    #   with:
+    #     sp_url: https://xinbao.sharepoint.com/:f:/r/sites/OpenWrt
+    #     sp_username: ${{ secrets.USERNAME }}
+    #     sp_password: ${{ secrets.PASSWORD }}
+    #     sp_folder: /Shared Documents/OpenWrt/${{ steps.date.outputs.date }}
+    #     sp_file_name: ${{ env.SP_UEFI_VHDX }}
+    #     file: openwrt/bin/Firmware/${{ env.SP_UEFI_VHDX }}
+
+    - name: 5 Upload SP_LEGACY_IMG_GZ to SharePoint
+      uses: su-dont/share-point-uploader@v2.1
+      if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
+      with:
+        sp_url: https://xinbao.sharepoint.com/:f:/r/sites/OpenWrt
+        sp_username: ${{ secrets.USERNAME }}
+        sp_password: ${{ secrets.PASSWORD }}
+        sp_folder: /Shared Documents/OpenWrt/${{ steps.date.outputs.date }}
+        sp_file_name: ${{ env.SP_LEGACY_IMG_GZ }}
+        file: openwrt/bin/Firmware/${{ env.SP_LEGACY_IMG_GZ }}
+
+    - name: 6 Upload SP_LEGACY_VMDK to SharePoint
+      uses: su-dont/share-point-uploader@v2.1
+      if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
+      with:
+        sp_url: https://xinbao.sharepoint.com/:f:/r/sites/OpenWrt
+        sp_username: ${{ secrets.USERNAME }}
+        sp_password: ${{ secrets.PASSWORD }}
+        sp_folder: /Shared Documents/OpenWrt/${{ steps.date.outputs.date }}
+        sp_file_name: ${{ env.SP_LEGACY_VMDK }}
+        file: openwrt/bin/Firmware/${{ env.SP_LEGACY_VMDK }}
+
+    # - name: 7 Upload SP_LEGACY_VDI to SharePoint
+    #   uses: su-dont/share-point-uploader@v2.1
+    #   if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
+    #   with:
+    #     sp_url: https://xinbao.sharepoint.com/:f:/r/sites/OpenWrt
+    #     sp_username: ${{ secrets.USERNAME }}
+    #     sp_password: ${{ secrets.PASSWORD }}
+    #     sp_folder: /Shared Documents/OpenWrt/${{ steps.date.outputs.date }}
+    #     sp_file_name: ${{ env.SP_LEGACY_VDI }}
+    #     file: openwrt/bin/Firmware/${{ env.SP_LEGACY_VDI }}
+
+    # - name: 8 Upload SP_LEGACY_VHDX to SharePoint
+    #   uses: su-dont/share-point-uploader@v2.1
+    #   if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
+    #   with:
+    #     sp_url: https://xinbao.sharepoint.com/:f:/r/sites/OpenWrt
+    #     sp_username: ${{ secrets.USERNAME }}
+    #     sp_password: ${{ secrets.PASSWORD }}
+    #     sp_folder: /Shared Documents/OpenWrt/${{ steps.date.outputs.date }}
+    #     sp_file_name: ${{ env.SP_LEGACY_VHDX }}
+    #     file: openwrt/bin/Firmware/${{ env.SP_LEGACY_VHDX }}
+
+    - name: Delete VM Disk File
+      if: env.Release=='true' && env.UPLOAD_RELEASES == 'true' && env.Result == 'true' && !cancelled()
+      run: |
+        rm openwrt/bin/Firmware/AutoBuild-*.v* -rf
+
+    - name: Upload Firmware to Github Release
+      uses: svenstaro/upload-release-action@v2
+      if: env.Release=='true' && env.UPLOAD_RELEASES == 'true' && env.Result == 'true' && !cancelled()
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: openwrt/bin/Firmware/*
+        file_glob: true
+        tag: AutoUpdate
+        overwrite: true
+
+    - name: Upload API to Github Release
+      if: env.Release=='true' && env.UPLOAD_RELEASES == 'true' && env.Result == 'true' && !cancelled()
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: ./API
+        file_glob: true
+        tag: AutoUpdate
+        overwrite: true
+
+    - name: Delete old Workflow Runs
+      uses: GitRML/delete-workflow-runs@main
+      if: env.DELETE_OLD_WORKFLOW == 'true' && !cancelled()
+      with:
+        retain_days: 1
+        keep_minimum_runs: 3
