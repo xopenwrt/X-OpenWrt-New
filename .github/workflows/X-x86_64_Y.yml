@@ -191,6 +191,7 @@ jobs:
     - name: Build OpenWrt
       run: |
         cd openwrt
+        rm package/feeds/packages/net/adguardhome -rf
         make -j4 || make -j1 V=s
         [ "$?" == 0 ] && echo "Result=true" >> $GITHUB_ENV || echo "Result=false" >> $GITHUB_ENV
 
