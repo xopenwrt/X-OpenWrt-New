@@ -113,8 +113,8 @@ EOF
 		;;
 		x86_64)
 			Copy ${CustomFiles}/Depends/cpuset ${BASE_FILES}/bin
-			AddPackage git passwall-depends openwrt-passwall xiaorouji packages
-			AddPackage git passwall-luci openwrt-passwall xiaorouji luci
+			AddPackage git passwall-depends openwrt-passwall-packages xiaorouji main
+			AddPackage git passwall-luci openwrt-passwall xiaorouji main
 			AddPackage git other luci-app-dockerman lisaac master
 			rm -rf packages/lean/autocore # May Can Delete
 			AddPackage git lean autocore-modify xopenwrt master
