@@ -70,7 +70,7 @@ EOF
 		# sed -i 's/luci-theme-bootstrap/luci-theme-argon-mod/g' feeds/luci/collections/luci/Makefile
 		# sed -i '/uci commit luci/i\uci set luci.main.mediaurlbase="/luci-static/argon-mod"' $(PKG_Finder d package default-settings)/files/zzz-default-settings
 		
-		for i in eqos mentohust minieap unblockneteasemusic
+		for i in eqos mentohust minieap unblockneteasemusic-go
 		do
 			AddPackage svn apps luci-app-${i} immortalwrt/luci/branches/openwrt-18.06/applications
 			sed -i 's/..\/..\//\$\(TOPDIR\)\/feeds\/luci\//g' ${WORK}/package/apps/luci-app-${i}/Makefile
