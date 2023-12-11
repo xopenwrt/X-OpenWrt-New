@@ -66,7 +66,7 @@ then
 fi
 exit 0
 EOF
-		sed -i "s?/bin/login?/usr/libexec/login.sh?g" ${FEEDS_PKG}/ttyd/files/ttyd.config
+		# sed -i "s?/bin/login?/usr/libexec/login.sh?g" ${FEEDS_PKG}/ttyd/files/ttyd.config
 		# sed -i 's/luci-theme-bootstrap/luci-theme-argon-mod/g' feeds/luci/collections/luci/Makefile
 		# sed -i '/uci commit luci/i\uci set luci.main.mediaurlbase="/luci-static/argon-mod"' $(PKG_Finder d package default-settings)/files/zzz-default-settings
 		
@@ -115,6 +115,7 @@ EOF
 			Copy ${CustomFiles}/Depends/cpuset ${BASE_FILES}/bin
 			AddPackage git passwall-depends openwrt-passwall-packages xiaorouji main
 			AddPackage git passwall-luci openwrt-passwall xiaorouji main
+			AddPackage git passwall2-luci openwrt-passwall2 xiaorouji main
 			AddPackage git other luci-app-dockerman lisaac master
 			rm -rf packages/lean/autocore # May Can Delete
 			AddPackage git lean autocore-modify xopenwrt master
@@ -128,7 +129,7 @@ EOF
 		esac
 	;;
 	immortalwrt/immortalwrt*)
-		sed -i "s?/bin/login?/usr/libexec/login.sh?g" ${FEEDS_PKG}/ttyd/files/ttyd.config
+		# sed -i "s?/bin/login?/usr/libexec/login.sh?g" ${FEEDS_PKG}/ttyd/files/ttyd.config
 	;;
 	esac
 }
