@@ -80,7 +80,7 @@ EOF
 		AddPackage git other luci-theme-atmaterial-ColorIcon esirplayground master
 		AddPackage git lean luci-app-argon-config jerrykuku master
 		AddPackage git other OpenClash vernesong master
-		AddPackage git other luci-app-vssr jerrykuku master
+		# AddPackage git other luci-app-vssr jerrykuku master
 		AddPackage git other lua-maxminddb jerrykuku master
 		AddPackage git other luci-theme-neobird thinktip main
 		AddPackage git other luci-app-ikoolproxy iwrt main
