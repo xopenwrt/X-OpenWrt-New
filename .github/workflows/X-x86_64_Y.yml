@@ -71,6 +71,12 @@ jobs:
         remove-android: 'true'
         remove-haskell: 'true'
 
+    - name: Checkout
+      uses: actions/checkout@main
+      with:
+        fetch-depth: 0
+
+
     - name: Set env & Echo System Info
       id: date
       run: |
@@ -89,10 +95,7 @@ jobs:
         Get_Release_Info
 
         
-    - name: Checkout
-      uses: actions/checkout@main
-      with:
-        fetch-depth: 0
+
 
     - name: Load Custom Variables
       run: |
