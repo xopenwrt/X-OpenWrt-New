@@ -70,12 +70,24 @@ jobs:
         remove-dotnet: 'true'
         remove-android: 'true'
 
-    - name: Get current date & Set env
+    - name: Set env & Echo System Info
       id: date
       run: |
         echo "::set-output name=date::$(date +'%Y-%m-%d')"
         echo "Release=${{ github.event.inputs.Release }}" >> $GITHUB_ENV
         echo "SharePoint=${{ github.event.inputs.SharePoint }}" >> $GITHUB_ENV
+        echo "data2=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+        echo "NOW_DATA_VERSION=v$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+
+        export NOW_DATA_VERSION=${{env.NOW_DATA_VERSION}}
+        export GITHUB_WORKSPACE=$GITHUB_WORKSPACE
+
+        chmod +x $GITHUB_WORKSPACE/Scripts/AutoBuild_*.sh
+        source $GITHUB_WORKSPACE/Scripts/AutoBuild_Getenv.sh
+        Get_Action_Info
+        Get_Release_Info
+
+
     - name: Checkout
       uses: actions/checkout@main
       with:

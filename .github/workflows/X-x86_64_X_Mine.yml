@@ -62,12 +62,21 @@ jobs:
   Compile:
     runs-on: self-hosted
     steps:
-    - name: Get current date & Set env
+    - name: Set env & Echo System Info
       id: date
       run: |
         echo "::set-output name=date::$(date +'%Y-%m-%d')"
         echo "Release=${{ github.event.inputs.Release }}" >> $GITHUB_ENV
         echo "SharePoint=${{ github.event.inputs.SharePoint }}" >> $GITHUB_ENV
+        echo "data2=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+        echo "NOW_DATA_VERSION=v$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+
+        export NOW_DATA_VERSION=${{env.NOW_DATA_VERSION}}
+        export GITHUB_WORKSPACE=$GITHUB_WORKSPACE
+
+        chmod +x $GITHUB_WORKSPACE/Scripts/AutoBuild_*.sh
+        source $GITHUB_WORKSPACE/Scripts/AutoBuild_Getenv.sh
+
         if [ "${{ env.DELETE_USELESS_FILES }}" == true ]
         then
             docker rmi node:18 node:18-alpine node:16-alpine alpine:3.16 alpine:3.17 alpine:3.18 moby/buildkit:latest node:16 ubuntu:20.04 buildpack-deps:stretch buildpack-deps:buster buildpack-deps:bullseye debian:9 debian:10 debian:11
@@ -75,6 +84,8 @@ jobs:
             sudo -E apt-get -y autoremove --purge
             sudo -E apt-get clean
         fi
+        Get_Action_Info
+        Get_Release_Info
 
     # - name: Maximize Build Space
     #   uses: easimon/maximize-build-space@master
