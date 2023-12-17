@@ -102,7 +102,7 @@ jobs:
         chmod +x $GITHUB_WORKSPACE/Scripts/AutoBuild_*.sh
         source $GITHUB_WORKSPACE/Scripts/AutoBuild_Getenv.sh
         Get_Action_Info
-        Get_Release_Info
+         
 
 
 

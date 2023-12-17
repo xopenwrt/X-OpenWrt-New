@@ -91,7 +91,7 @@ jobs:
             sudo -E apt-get clean
         fi
         Get_Action_Info
-        Get_Release_Info
+         
 
     # - name: Maximize Build Space
     #   uses: easimon/maximize-build-space@master
