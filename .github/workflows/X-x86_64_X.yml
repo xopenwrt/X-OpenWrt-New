@@ -204,7 +204,7 @@ jobs:
         cd openwrt
         ./scripts/feeds install -a
         make defconfig
-        make download -j1 V=s
+        make download -j32
 
     - name: Build OpenWrt
       run: |
