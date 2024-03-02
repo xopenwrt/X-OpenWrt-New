@@ -88,11 +88,11 @@ EOF
 		AddPackage git other helloworld fw876 master
 		AddPackage git other luci-app-smartdns pymumu lede
 		# sed -i 's/143/143,8080,8443,6969,1337/' $(PKG_Finder d package luci-app-ssr-plus)/root/etc/init.d/shadowsocksr
-		
-		for x in $(ls -1 ${CustomFiles}/Patches/luci-app-shadowsocksr)
-		do
-			patch < ${CustomFiles}/Patches/luci-app-shadowsocksr/${x} -p1 -d ${WORK}
-		done ; unset x
+		# Close patch 2024.03.02 by xinb
+		# for x in $(ls -1 ${CustomFiles}/Patches/luci-app-shadowsocksr)
+		# do
+		# 	patch < ${CustomFiles}/Patches/luci-app-shadowsocksr/${x} -p1 -d ${WORK}
+		# done ; unset x
 		
 		patch < ${CustomFiles}/Patches/fix_coremark.patch -p1 -d ${WORK}
 		#patch < ${CustomFiles}/Patches/fix_aria2_auto_create_download_path.patch -p1 -d ${WORK}
