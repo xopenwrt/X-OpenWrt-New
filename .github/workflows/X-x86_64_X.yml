@@ -178,6 +178,9 @@ jobs:
         ./scripts/feeds update -a
         ./scripts/feeds install -a
         ./scripts/feeds uninstall luci-theme-argon
+        # Update golang to 1.22 for xray-core build
+        rm -rf feeds/packages/lang/golang
+        git clone https://github.com/sbwml/packages_lang_golang -b 22.x feeds/packages/lang/golang
 #        sed -i 's/^\s*$[(]call\sEnsureVendoredVersion/#&/' $GITHUB_WORKSPACE/openwrt/feeds/packages/utils/dockerd/Makefile
 #fix dockerd bug
 
