@@ -211,6 +211,8 @@ jobs:
         rm feeds/packages/net/adguardhome -rf
         ln -s ../../../package/other/AutoBuild-Packages/adguardhome package/feeds/packages/adguardhome
         make -j4 | tee ./build_log.log || make -j1 V=s
+        # 2024.03.03 mosdns build fail by golang 1.22
+        sed -i 's/CGO_ENABLED=0/CGO_ENABLED=1/g' feeds/packages/net/mosdns/Makefile
         [ "$?" == 0 ] && echo "Result=true" >> $GITHUB_ENV || echo "Result=false" >> $GITHUB_ENV
 
     - name: Check Build Update
