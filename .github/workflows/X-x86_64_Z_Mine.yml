@@ -273,7 +273,7 @@ jobs:
       uses: su-dont/share-point-uploader@v2.1
       if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
       with:
-        sp_url: https://xinbao.sharepoint.com/:f:/r/sites/OpenWrt
+        sp_url: https://xinbyte.sharepoint.com/:f:/r/sites/OpenWrt
         sp_username: ${{ secrets.USERNAME }}
         sp_password: ${{ secrets.PASSWORD }}
         sp_folder: /Shared Documents/OpenWrt/${{ steps.date.outputs.date }}
@@ -284,7 +284,7 @@ jobs:
       uses: su-dont/share-point-uploader@v2.1
       if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
       with:
-        sp_url: https://xinbao.sharepoint.com/:f:/r/sites/OpenWrt
+        sp_url: https://xinbyte.sharepoint.com/:f:/r/sites/OpenWrt
         sp_username: ${{ secrets.USERNAME }}
         sp_password: ${{ secrets.PASSWORD }}
         sp_folder: /Shared Documents/OpenWrt/${{ steps.date.outputs.date }}
@@ -295,7 +295,7 @@ jobs:
     #   uses: su-dont/share-point-uploader@v2.1
     #   if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
     #   with:
-    #     sp_url: https://xinbao.sharepoint.com/:f:/r/sites/OpenWrt
+    #     sp_url: https://xinbyte.sharepoint.com/:f:/r/sites/OpenWrt
     #     sp_username: ${{ secrets.USERNAME }}
     #     sp_password: ${{ secrets.PASSWORD }}
     #     sp_folder: /Shared Documents/OpenWrt/${{ steps.date.outputs.date }}
@@ -306,7 +306,7 @@ jobs:
     #   uses: su-dont/share-point-uploader@v2.1
     #   if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
     #   with:
-    #     sp_url: https://xinbao.sharepoint.com/:f:/r/sites/OpenWrt
+    #     sp_url: https://xinbyte.sharepoint.com/:f:/r/sites/OpenWrt
     #     sp_username: ${{ secrets.USERNAME }}
     #     sp_password: ${{ secrets.PASSWORD }}
     #     sp_folder: /Shared Documents/OpenWrt/${{ steps.date.outputs.date }}
@@ -317,7 +317,7 @@ jobs:
       uses: su-dont/share-point-uploader@v2.1
       if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
       with:
-        sp_url: https://xinbao.sharepoint.com/:f:/r/sites/OpenWrt
+        sp_url: https://xinbyte.sharepoint.com/:f:/r/sites/OpenWrt
         sp_username: ${{ secrets.USERNAME }}
         sp_password: ${{ secrets.PASSWORD }}
         sp_folder: /Shared Documents/OpenWrt/${{ steps.date.outputs.date }}
@@ -328,7 +328,7 @@ jobs:
       uses: su-dont/share-point-uploader@v2.1
       if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
       with:
-        sp_url: https://xinbao.sharepoint.com/:f:/r/sites/OpenWrt
+        sp_url: https://xinbyte.sharepoint.com/:f:/r/sites/OpenWrt
         sp_username: ${{ secrets.USERNAME }}
         sp_password: ${{ secrets.PASSWORD }}
         sp_folder: /Shared Documents/OpenWrt/${{ steps.date.outputs.date }}
@@ -339,7 +339,7 @@ jobs:
     #   uses: su-dont/share-point-uploader@v2.1
     #   if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
     #   with:
-    #     sp_url: https://xinbao.sharepoint.com/:f:/r/sites/OpenWrt
+    #     sp_url: https://xinbyte.sharepoint.com/:f:/r/sites/OpenWrt
     #     sp_username: ${{ secrets.USERNAME }}
     #     sp_password: ${{ secrets.PASSWORD }}
     #     sp_folder: /Shared Documents/OpenWrt/${{ steps.date.outputs.date }}
@@ -350,7 +350,7 @@ jobs:
     #   uses: su-dont/share-point-uploader@v2.1
     #   if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
     #   with:
-    #     sp_url: https://xinbao.sharepoint.com/:f:/r/sites/OpenWrt
+    #     sp_url: https://xinbyte.sharepoint.com/:f:/r/sites/OpenWrt
     #     sp_username: ${{ secrets.USERNAME }}
     #     sp_password: ${{ secrets.PASSWORD }}
     #     sp_folder: /Shared Documents/OpenWrt/${{ steps.date.outputs.date }}
