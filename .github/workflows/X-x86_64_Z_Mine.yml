@@ -269,49 +269,28 @@ jobs:
         echo SP_LEGACY_VDI=$(echo $SP_LEGACY_VDI) >> $GITHUB_ENV
         echo SP_LEGACY_VHDX=$(echo $SP_LEGACY_VHDX) >> $GITHUB_ENV
 
-    - name: 1 Upload SP_UEFI_IMG_GZ to SharePoint
-      uses: cringdahl/sharepoint-file-upload-action@v1.2.1
-      with:
-        file_path: "openwrt/bin/Firmware/${{ env.SP_UEFI_IMG_GZ }}"
-        host_name: 'xinbyte.sharepoint.com'
-        site_name: 'OpenWrt'
-        upload_path: 'OpenWrt/${{ steps.date.outputs.date }}'
-        tenant_id: ${{ secrets.SHAREPOINT_TENANT_ID }}
-        client_id: ${{ secrets.SHAREPOINT_CLIENT_ID }}
-        client_secret: ${{ secrets.SHAREPOINT_CLIENT_SECRET }}
 
-    # - name: 1 Upload SP_UEFI_IMG_GZ to SharePoint
-    #   uses: su-dont/share-point-uploader@v2.1
-    #   if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
-    #   with:
-    #     sp_url: https://xinbyte.sharepoint.com/:f:/r/sites/OpenWrt
-    #     sp_username: ${{ secrets.USERNAME }}
-    #     sp_password: ${{ secrets.PASSWORD }}
-    #     sp_folder: /Shared Documents/OpenWrt/${{ steps.date.outputs.date }}
-    #     sp_file_name: ${{ env.SP_UEFI_IMG_GZ }}
-    #     file: openwrt/bin/Firmware/${{ env.SP_UEFI_IMG_GZ }}
-    
-    - name: 2 Upload SP_UEFI_VMDK to SharePoint
-      uses: cringdahl/sharepoint-file-upload-action@v1.2.1
+    - name: 1 Upload SP_UEFI_IMG_GZ to SharePoint
+      uses: su-dont/share-point-uploader@v2.1
+      if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
       with:
-        file_path: "openwrt/bin/Firmware/${{ env.SP_UEFI_VMDK }}"
-        host_name: 'xinbyte.sharepoint.com'
-        site_name: 'OpenWrt'
-        upload_path: 'OpenWrt/${{ steps.date.outputs.date }}'
-        tenant_id: ${{ secrets.SHAREPOINT_TENANT_ID }}
-        client_id: ${{ secrets.SHAREPOINT_CLIENT_ID }}
-        client_secret: ${{ secrets.SHAREPOINT_CLIENT_SECRET }}
+        sp_url: https://xinbyte.sharepoint.com/:f:/r/sites/OpenWrt
+        sp_username: ${{ secrets.USERNAME }}
+        sp_password: ${{ secrets.PASSWORD }}
+        sp_folder: /Shared Documents/OpenWrt/${{ steps.date.outputs.date }}
+        sp_file_name: ${{ env.SP_UEFI_IMG_GZ }}
+        file: openwrt/bin/Firmware/${{ env.SP_UEFI_IMG_GZ }}
         
-    # - name: 2 Upload SP_UEFI_VMDK to SharePoint
-    #   uses: su-dont/share-point-uploader@v2.1
-    #   if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
-    #   with:
-    #     sp_url: https://xinbyte.sharepoint.com/:f:/r/sites/OpenWrt
-    #     sp_username: ${{ secrets.USERNAME }}
-    #     sp_password: ${{ secrets.PASSWORD }}
-    #     sp_folder: /Shared Documents/OpenWrt/${{ steps.date.outputs.date }}
-    #     sp_file_name: ${{ env.SP_UEFI_VMDK }}
-    #     file: openwrt/bin/Firmware/${{ env.SP_UEFI_VMDK }}
+    - name: 2 Upload SP_UEFI_VMDK to SharePoint
+      uses: su-dont/share-point-uploader@v2.1
+      if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
+      with:
+        sp_url: https://xinbyte.sharepoint.com/:f:/r/sites/OpenWrt
+        sp_username: ${{ secrets.USERNAME }}
+        sp_password: ${{ secrets.PASSWORD }}
+        sp_folder: /Shared Documents/OpenWrt/${{ steps.date.outputs.date }}
+        sp_file_name: ${{ env.SP_UEFI_VMDK }}
+        file: openwrt/bin/Firmware/${{ env.SP_UEFI_VMDK }}
 
     # - name: 3 Upload SP_UEFI_VDI to SharePoint
     #   uses: su-dont/share-point-uploader@v2.1
@@ -334,49 +313,28 @@ jobs:
     #     sp_folder: /Shared Documents/OpenWrt/${{ steps.date.outputs.date }}
     #     sp_file_name: ${{ env.SP_UEFI_VHDX }}
     #     file: openwrt/bin/Firmware/${{ env.SP_UEFI_VHDX }}
-    - name: 5 Upload SP_UEFI_VMDK to SharePoint
-      uses: cringdahl/sharepoint-file-upload-action@v1.2.1
-      with:
-        file_path: "openwrt/bin/Firmware/${{ env.SP_LEGACY_IMG_GZ }}"
-        host_name: 'xinbyte.sharepoint.com'
-        site_name: 'OpenWrt'
-        upload_path: 'OpenWrt/${{ steps.date.outputs.date }}'
-        tenant_id: ${{ secrets.SHAREPOINT_TENANT_ID }}
-        client_id: ${{ secrets.SHAREPOINT_CLIENT_ID }}
-        client_secret: ${{ secrets.SHAREPOINT_CLIENT_SECRET }}
-
-    - name: 6 Upload SP_UEFI_VMDK to SharePoint
-      uses: cringdahl/sharepoint-file-upload-action@v1.2.1
-      with:
-        file_path: "openwrt/bin/Firmware/${{ env.SP_LEGACY_VMDK }}"
-        host_name: 'xinbyte.sharepoint.com'
-        site_name: 'OpenWrt'
-        upload_path: 'OpenWrt/${{ steps.date.outputs.date }}'
-        tenant_id: ${{ secrets.SHAREPOINT_TENANT_ID }}
-        client_id: ${{ secrets.SHAREPOINT_CLIENT_ID }}
-        client_secret: ${{ secrets.SHAREPOINT_CLIENT_SECRET }}
         
-    # - name: 5 Upload SP_LEGACY_IMG_GZ to SharePoint
-    #   uses: su-dont/share-point-uploader@v2.1
-    #   if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
-    #   with:
-    #     sp_url: https://xinbyte.sharepoint.com/:f:/r/sites/OpenWrt
-    #     sp_username: ${{ secrets.USERNAME }}
-    #     sp_password: ${{ secrets.PASSWORD }}
-    #     sp_folder: /Shared Documents/OpenWrt/${{ steps.date.outputs.date }}
-    #     sp_file_name: ${{ env.SP_LEGACY_IMG_GZ }}
-    #     file: openwrt/bin/Firmware/${{ env.SP_LEGACY_IMG_GZ }}
+    - name: 5 Upload SP_LEGACY_IMG_GZ to SharePoint
+      uses: su-dont/share-point-uploader@v2.1
+      if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
+      with:
+        sp_url: https://xinbyte.sharepoint.com/:f:/r/sites/OpenWrt
+        sp_username: ${{ secrets.USERNAME }}
+        sp_password: ${{ secrets.PASSWORD }}
+        sp_folder: /Shared Documents/OpenWrt/${{ steps.date.outputs.date }}
+        sp_file_name: ${{ env.SP_LEGACY_IMG_GZ }}
+        file: openwrt/bin/Firmware/${{ env.SP_LEGACY_IMG_GZ }}
 
-    # - name: 6 Upload SP_LEGACY_VMDK to SharePoint
-    #   uses: su-dont/share-point-uploader@v2.1
-    #   if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
-    #   with:
-    #     sp_url: https://xinbyte.sharepoint.com/:f:/r/sites/OpenWrt
-    #     sp_username: ${{ secrets.USERNAME }}
-    #     sp_password: ${{ secrets.PASSWORD }}
-    #     sp_folder: /Shared Documents/OpenWrt/${{ steps.date.outputs.date }}
-    #     sp_file_name: ${{ env.SP_LEGACY_VMDK }}
-    #     file: openwrt/bin/Firmware/${{ env.SP_LEGACY_VMDK }}
+    - name: 6 Upload SP_LEGACY_VMDK to SharePoint
+      uses: su-dont/share-point-uploader@v2.1
+      if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
+      with:
+        sp_url: https://xinbyte.sharepoint.com/:f:/r/sites/OpenWrt
+        sp_username: ${{ secrets.USERNAME }}
+        sp_password: ${{ secrets.PASSWORD }}
+        sp_folder: /Shared Documents/OpenWrt/${{ steps.date.outputs.date }}
+        sp_file_name: ${{ env.SP_LEGACY_VMDK }}
+        file: openwrt/bin/Firmware/${{ env.SP_LEGACY_VMDK }}
 
     # - name: 7 Upload SP_LEGACY_VDI to SharePoint
     #   uses: su-dont/share-point-uploader@v2.1
