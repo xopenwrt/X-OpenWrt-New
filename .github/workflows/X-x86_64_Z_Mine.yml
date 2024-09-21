@@ -270,7 +270,7 @@ jobs:
         echo SP_LEGACY_VHDX=$(echo $SP_LEGACY_VHDX) >> $GITHUB_ENV
 
     - name: 1 Upload SP_UEFI_IMG_GZ to SharePoint
-      uses: cringdahl/sharepoint-file-upload-action@1.0.0
+      uses: cringdahl/sharepoint-file-upload-action@v1.2.1
       with:
         file_path: "openwrt/bin/Firmware/${{ env.SP_UEFI_IMG_GZ }}"
         host_name: 'xinbyte.sharepoint.com'
@@ -292,7 +292,7 @@ jobs:
     #     file: openwrt/bin/Firmware/${{ env.SP_UEFI_IMG_GZ }}
     
     - name: 2 Upload SP_UEFI_VMDK to SharePoint
-      uses: cringdahl/sharepoint-file-upload-action@1.0.0
+      uses: cringdahl/sharepoint-file-upload-action@v1.2.1
       with:
         file_path: "openwrt/bin/Firmware/${{ env.SP_UEFI_VMDK }}"
         host_name: 'xinbyte.sharepoint.com'
@@ -335,7 +335,7 @@ jobs:
     #     sp_file_name: ${{ env.SP_UEFI_VHDX }}
     #     file: openwrt/bin/Firmware/${{ env.SP_UEFI_VHDX }}
     - name: 5 Upload SP_UEFI_VMDK to SharePoint
-      uses: cringdahl/sharepoint-file-upload-action@1.0.0
+      uses: cringdahl/sharepoint-file-upload-action@v1.2.1
       with:
         file_path: "openwrt/bin/Firmware/${{ env.SP_LEGACY_IMG_GZ }}"
         host_name: 'xinbyte.sharepoint.com'
@@ -346,7 +346,7 @@ jobs:
         client_secret: ${{ secrets.SHAREPOINT_CLIENT_SECRET }}
 
     - name: 6 Upload SP_UEFI_VMDK to SharePoint
-      uses: cringdahl/sharepoint-file-upload-action@1.0.0
+      uses: cringdahl/sharepoint-file-upload-action@v1.2.1
       with:
         file_path: "openwrt/bin/Firmware/${{ env.SP_LEGACY_VMDK }}"
         host_name: 'xinbyte.sharepoint.com'
