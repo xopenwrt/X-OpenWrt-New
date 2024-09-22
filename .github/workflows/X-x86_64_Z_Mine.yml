@@ -67,7 +67,7 @@ jobs:
       uses: actions/checkout@main
       with:
         fetch-depth: 0
-        
+
     - name: Set env & Echo System Info
       id: date
       run: |
@@ -91,17 +91,6 @@ jobs:
         fi
         Get_Action_Info
          
-
-    # - name: Maximize Build Space
-    #   uses: easimon/maximize-build-space@master
-    #   with:
-    #     root-reserve-mb: 3500
-    #     swap-size-mb: 100
-    #     remove-dotnet: 'true'
-    #     remove-android: 'true'
-    #     remove-haskell: 'true'
-
-
 
     - name: Load Custom Variables
       run: |
@@ -148,7 +137,8 @@ jobs:
         DEBIAN_FRONTEND: noninteractive
       run: |
         sudo -E apt-get update
-        sudo -E apt-get -y install build-essential cmake asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc-s1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib g++-multilib p7zip p7zip-full msmtp libssl-dev texinfo libreadline-dev libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint ccache curl wget vim nano python3 python3-pip python3-ply haveged lrzsz device-tree-compiler scons antlr3 gperf intltool mkisofs rsync
+        sudo -E apt-get -y install build-essential cmake asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib g++-multilib p7zip p7zip-full msmtp libssl-dev texinfo libreadline-dev libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint ccache curl wget vim nano python3 python3-pip python3-ply haveged lrzsz device-tree-compiler scons antlr3 gperf intltool mkisofs rsync
+        sudo -E apt-get -y install llvm clang
         sudo timedatectl set-timezone "Asia/Shanghai"
         sudo mkdir -p /workdir
 #        sudo chown $USER:$GROUPS /workdir
@@ -174,6 +164,9 @@ jobs:
         ./scripts/feeds update -a
         ./scripts/feeds install -a
         ./scripts/feeds uninstall luci-theme-argon
+        # Update golang to 1.22 for xray-core build
+        rm -rf feeds/packages/lang/golang
+        git clone https://github.com/sbwml/packages_lang_golang -b 22.x feeds/packages/lang/golang
 #        sed -i 's/^\s*$[(]call\sEnsureVendoredVersion/#&/' $GITHUB_WORKSPACE/openwrt/feeds/packages/utils/dockerd/Makefile
 #fix dockerd bug
 
@@ -208,8 +201,36 @@ jobs:
         rm package/feeds/packages/adguardhome -rf
         rm feeds/packages/net/adguardhome -rf
         ln -s ../../../package/other/AutoBuild-Packages/adguardhome package/feeds/packages/adguardhome
-        make -j8 || make -j1 V=s
+        make -j$(($(nproc) + 1)) | tee ./build_log.log || make -j1 V=s
+        # 2024.03.03 mosdns build fail by golang 1.22
+        sed -i 's/CGO_ENABLED=0/CGO_ENABLED=1/g' feeds/packages/net/mosdns/Makefile
         [ "$?" == 0 ] && echo "Result=true" >> $GITHUB_ENV || echo "Result=false" >> $GITHUB_ENV
+
+    - name: Check Build Update
+      run: |
+        export NOW_DATA_VERSION=${{env.NOW_DATA_VERSION}}
+        export GITHUB_WORKSPACE=$GITHUB_WORKSPACE
+        bash $GITHUB_WORKSPACE/Scripts/AutoBuild_Upcheck.sh ${{env.Tempoary_FLAG}}
+  
+    - name: Upload Package Version to Github Release
+      uses: svenstaro/upload-release-action@v2
+      if: env.Release=='true' && env.UPLOAD_RELEASES == 'true' && env.Result == 'true' && !cancelled()
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: ${{env.Tempoary_FLAG}}_build_pkg_ver.log
+        file_glob: true
+        tag: v${{ steps.date.outputs.date }}
+        overwrite: true
+  
+    - name: Upload Package Update to Github Release
+      uses: svenstaro/upload-release-action@v2
+      if: env.Release=='true' && env.UPLOAD_RELEASES == 'true' && env.Result == 'true' && !cancelled()
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: ${{env.Tempoary_FLAG}}_build_pkg_up.log 
+        file_glob: true
+        tag: v${{ steps.date.outputs.date }}
+        overwrite: true
 
     - name: Process Firmware
       if: env.Result == 'true' && !cancelled()
@@ -279,8 +300,7 @@ jobs:
         sp_folder: /Shared Documents/OpenWrt/${{ steps.date.outputs.date }}
         sp_file_name: ${{ env.SP_UEFI_IMG_GZ }}
         file: openwrt/bin/Firmware/${{ env.SP_UEFI_IMG_GZ }}
-    
-        
+
     - name: 2 Upload SP_UEFI_VMDK to SharePoint
       uses: su-dont/share-point-uploader@v2.1
       if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
@@ -313,7 +333,7 @@ jobs:
     #     sp_folder: /Shared Documents/OpenWrt/${{ steps.date.outputs.date }}
     #     sp_file_name: ${{ env.SP_UEFI_VHDX }}
     #     file: openwrt/bin/Firmware/${{ env.SP_UEFI_VHDX }}
-        
+
     - name: 5 Upload SP_LEGACY_IMG_GZ to SharePoint
       uses: su-dont/share-point-uploader@v2.1
       if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
@@ -334,7 +354,7 @@ jobs:
         sp_password: ${{ secrets.PASSWORD }}
         sp_folder: /Shared Documents/OpenWrt/${{ steps.date.outputs.date }}
         sp_file_name: ${{ env.SP_LEGACY_VMDK }}
-    #     file: openwrt/bin/Firmware/${{ env.SP_LEGACY_VMDK }}
+        file: openwrt/bin/Firmware/${{ env.SP_LEGACY_VMDK }}
 
     # - name: 7 Upload SP_LEGACY_VDI to SharePoint
     #   uses: su-dont/share-point-uploader@v2.1
