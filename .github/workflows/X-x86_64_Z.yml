@@ -186,7 +186,7 @@ jobs:
         cd openwrt
         if [ "${{ env.CACHE_ACCELERATE }}" == true ]
         then
-            echo -e "\nCONFIG_DEVEL=y\nCONFIG_CCACHE=y\n" >> $GITHUB_WORKSPACE/Configs/$CONFIG_FILE
+            echo -e "\nCONFIG_DEVEL=y\nCONFIG_CCACHE=n\n" >> $GITHUB_WORKSPACE/Configs/$CONFIG_FILE
         fi
         cp $GITHUB_WORKSPACE/Configs/$CONFIG_FILE .config
         source $GITHUB_WORKSPACE/Scripts/AutoBuild_DiyScript.sh
