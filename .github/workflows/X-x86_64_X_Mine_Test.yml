@@ -149,7 +149,7 @@ jobs:
 
     - name: Clone Openwrt Source Code
       run: |
-        git clone -b $REPO_BRANCH $REPO_URL openwrt
+        # git clone -b $REPO_BRANCH $REPO_URL openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
     - name: Accelerate
