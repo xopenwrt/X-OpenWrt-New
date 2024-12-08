@@ -13,11 +13,11 @@ CONFIG_IB_STANDALONE=y
 # KERNEL_TESTING_PATCHVER:=6.1
 CONFIG_TESTING_KERNEL=y
 # Theme
-CONFIG_PACKAGE_luci-theme-atmaterial-ColorIcon=y
-CONFIG_PACKAGE_luci-theme-edge=y
+
+
 # CONFIG_PACKAGE_luci-theme-argon is not set
 CONFIG_PACKAGE_luci-theme-argon-mod=y
-CONFIG_PACKAGE_luci-theme-neobird=y
+# CONFIG_PACKAGE_luci-theme-neobird is not set
 # passwall
 CONFIG_PACKAGE_luci-app-passwall2=y
 # Adguard Home

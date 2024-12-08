@@ -78,7 +78,7 @@ EOF
 		done ; unset i
 
 		AddPackage svn apps minieap immortalwrt openwrt-18.06 packages net
-		AddPackage git other luci-theme-atmaterial-ColorIcon esirplayground master
+		# AddPackage git other luci-theme-atmaterial-ColorIcon esirplayground master
 		AddPackage git lean luci-app-argon-config jerrykuku master
 		AddPackage git other OpenClash vernesong master
 		# AddPackage git other luci-app-vssr jerrykuku master
