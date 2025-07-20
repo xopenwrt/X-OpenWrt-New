@@ -26,6 +26,9 @@ on:
       Tempoary_FLAG:
         description: '固件名称后缀 [可选]'
         default: 'X'
+      Tempoary_Remove_AMDGPU:
+        description: '是否移除AMD GPU驱动'
+        default: 'true'
 ### 结束
 
   #push:
@@ -74,6 +77,7 @@ jobs:
         echo "::set-output name=date::$(date +'%Y-%m-%d')"
         echo "Release=${{ github.event.inputs.Release }}" >> $GITHUB_ENV
         echo "SharePoint=${{ github.event.inputs.SharePoint }}" >> $GITHUB_ENV
+        echo "Tempoary_Remove_AMDGPU=${{ github.event.inputs.Tempoary_Remove_AMDGPU }}" >> $GITHUB_ENV
         echo "data2=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
         echo "NOW_DATA_VERSION=v$(date +'%Y-%m-%d')" >> $GITHUB_ENV
         
@@ -188,6 +192,10 @@ jobs:
         make defconfig
         Firmware_Diy_Before
         rm -f .config && cp $GITHUB_WORKSPACE/Configs/$CONFIG_FILE .config
+        if [ "${{ env.Tempoary_Remove_AMDGPU }}" == true ]
+        then
+          echo "# CONFIG_PACKAGE_kmod-drm-amdgpu is not set" >> .config
+        fi
         Firmware_Diy_Main
         Firmware_Diy
         Firmware_Diy_Other
