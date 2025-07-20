@@ -17,7 +17,11 @@ df -h
 echo "------------------------------- IP Address Info ------------------------------"
 IP=`curl ip.115115.xyz -s`
 curl ip.115115.xyz -s
-curl -s https://searchplugin.csdn.net/api/v1/ip/get?ip=${IP} | jq -r .data.address
+# curl -s https://searchplugin.csdn.net/api/v1/ip/get?ip=${IP} | jq -r .data.address
+Addr_Country=`curl -s "http://demo.ip-api.com/json/${IP}?fields=66842623&lang=zh-CN" | jq -r .country`
+Addr_Province=`curl -s "http://demo.ip-api.com/json/${IP}?fields=66842623&lang=zh-CN" | jq -r .regionName`
+Addr_City=`curl -s "http://demo.ip-api.com/json/${IP}?fields=66842623&lang=zh-CN" | jq -r .city`
+echo "${Addr_Country}, ${Addr_Province}, ${Addr_City}"
 }
 
 Get_Release_Info() {
