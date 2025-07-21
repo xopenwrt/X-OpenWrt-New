@@ -30,7 +30,7 @@ jobs:
 
     - name: Download Github Release API
       run: |
-        wget https://api.github.com/repos/${{github.repository}}/releases/tags/AutoUpdate -O API
+        wget --tries=5 --wait=5 https://api.github.com/repos/${{github.repository}}/releases/tags/AutoUpdate -O API
         
     - name: Upload API to Github Release
       uses: svenstaro/upload-release-action@v2

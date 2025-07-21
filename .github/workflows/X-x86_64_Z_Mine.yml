@@ -256,7 +256,7 @@ jobs:
     - name: Download Github Release API
       if: env.UPLOAD_RELEASES == 'true' && env.Result == 'true' && !cancelled()
       run: |
-        wget https://api.github.com/repos/${{github.repository}}/releases/tags/AutoUpdate -O API
+        wget --tries=5 --wait=5 https://api.github.com/repos/${{github.repository}}/releases/tags/AutoUpdate -O API
         SP_UEFI_IMG_GZ=openwrt/bin/Firmware/AutoBuild-*-UEFI-*.img.gz
         SP_UEFI_IMG_GZ=$(echo $SP_UEFI_IMG_GZ)
         SP_UEFI_IMG_GZ=${SP_UEFI_IMG_GZ##*/}
