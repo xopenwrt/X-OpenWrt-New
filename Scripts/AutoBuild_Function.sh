@@ -23,8 +23,11 @@ Firmware_Diy_Before() {
 	fi
 	case "${OP_AUTHOR}/${OP_REPO}" in
 	coolsnowwolf/lede)
+		# Version_File=package/lean/default-settings/files/zzz-default-settings
+		# zzz_Default_Version="$(egrep -o "R[0-9]+\.[0-9]+\.[0-9]+" ${Version_File})"
 		Version_File=package/lean/default-settings/files/zzz-default-settings
-		zzz_Default_Version="$(egrep -o "R[0-9]+\.[0-9]+\.[0-9]+" ${Version_File})"
+		Version_Raw=$(cat package/lean/default-settings/files/zzz-default-settings | grep DISTRIB_REVISION)
+		zzz_Default_Version="$(echo $Version_Raw | egrep -o "R[0-9]+\.[0-9]+\.[0-9]+")"
 		OP_VERSION="${zzz_Default_Version}-${Compile_Date}"
 	;;
 	immortalwrt/immortalwrt)
