@@ -17,7 +17,8 @@ df -h
 echo "------------------------------- IP Address Info ------------------------------"
 IP=`curl ip.115115.xyz -s`
 curl ip.115115.xyz -s
-curl -s https://searchplugin.csdn.net/api/v1/ip/get?ip=${IP} | jq -r .data.address
+# curl -s https://searchplugin.csdn.net/api/v1/ip/get?ip=${IP} | jq -r .data.address
+curl -s  https://api.vore.top/api/IPdata?ip=${IP} | jq -r .adcode.o
 }
 
 Get_Release_Info() {
