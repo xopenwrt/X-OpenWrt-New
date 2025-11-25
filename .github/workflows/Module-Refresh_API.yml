@@ -42,7 +42,7 @@ jobs:
         overwrite: true
 
     - name: Upload API to Github SharePoint
-      uses: koraykoska/s3-upload-github-action@master
+      uses: xopenwrt/s3-upload-github-action@0.1.4
       env:
         FILE: ./API
         S3_ENDPOINT: 's3.openwrt.115115.xyz'
