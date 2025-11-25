@@ -33,7 +33,7 @@ jobs:
         wget https://api.github.com/repos/${{github.repository}}/releases/tags/AutoUpdate -O API
         
     - name: Upload API to Github Release
-      uses: svenstaro/upload-release-action@master
+      uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: ./API
@@ -42,7 +42,7 @@ jobs:
         overwrite: true
 
     - name: Upload API to Github SharePoint
-      uses: xopenwrt/s3-upload-github-action@0.1.4
+      uses: xopenwrt/s3-upload-github-action@master
       env:
         FILE: ./API
         S3_ENDPOINT: 's3.openwrt.115115.xyz'
