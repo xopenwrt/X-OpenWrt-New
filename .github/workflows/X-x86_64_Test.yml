@@ -256,7 +256,7 @@ jobs:
         echo SP_LEGACY_VHDX=$(echo $SP_LEGACY_VHDX) >> $GITHUB_ENV
 
     - name: 1 Upload SP_UEFI_IMG_GZ to SharePoint
-      uses: xopenwrt/share-point-uploader@v2.2
+      uses: xopenwrt/share-point-uploader@v2.3
       if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
       with:
         sp_url: https://xinbyte.sharepoint.com/:f:/r/sites/OpenWrt
@@ -267,7 +267,7 @@ jobs:
         file: openwrt/bin/Firmware/${{ env.SP_UEFI_IMG_GZ }}
 
     - name: 2 Upload SP_UEFI_VMDK to SharePoint
-      uses: xopenwrt/share-point-uploader@v2.2
+      uses: xopenwrt/share-point-uploader@v2.3
       if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
       with:
         sp_url: https://xinbyte.sharepoint.com/:f:/r/sites/OpenWrt
@@ -278,7 +278,7 @@ jobs:
         file: openwrt/bin/Firmware/${{ env.SP_UEFI_VMDK }}
 
     # - name: 3 Upload SP_UEFI_VDI to SharePoint
-    #   uses: xopenwrt/share-point-uploader@v2.2
+    #   uses: xopenwrt/share-point-uploader@v2.3
     #   if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
     #   with:
     #     sp_url: https://xinbyte.sharepoint.com/:f:/r/sites/OpenWrt
@@ -289,7 +289,7 @@ jobs:
     #     file: openwrt/bin/Firmware/${{ env.SP_UEFI_VDI }}
 
     # - name: 4 Upload SP_UEFI_VHDX to SharePoint
-    #   uses: xopenwrt/share-point-uploader@v2.2
+    #   uses: xopenwrt/share-point-uploader@v2.3
     #   if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
     #   with:
     #     sp_url: https://xinbyte.sharepoint.com/:f:/r/sites/OpenWrt
@@ -300,7 +300,7 @@ jobs:
     #     file: openwrt/bin/Firmware/${{ env.SP_UEFI_VHDX }}
 
     - name: 5 Upload SP_LEGACY_IMG_GZ to SharePoint
-      uses: xopenwrt/share-point-uploader@v2.2
+      uses: xopenwrt/share-point-uploader@v2.3
       if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
       with:
         sp_url: https://xinbyte.sharepoint.com/:f:/r/sites/OpenWrt
@@ -311,7 +311,7 @@ jobs:
         file: openwrt/bin/Firmware/${{ env.SP_LEGACY_IMG_GZ }}
 
     - name: 6 Upload SP_LEGACY_VMDK to SharePoint
-      uses: xopenwrt/share-point-uploader@v2.2
+      uses: xopenwrt/share-point-uploader@v2.3
       if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
       with:
         sp_url: https://xinbyte.sharepoint.com/:f:/r/sites/OpenWrt
@@ -322,7 +322,7 @@ jobs:
         file: openwrt/bin/Firmware/${{ env.SP_LEGACY_VMDK }}
 
     # - name: 7 Upload SP_LEGACY_VDI to SharePoint
-    #   uses: xopenwrt/share-point-uploader@v2.2
+    #   uses: xopenwrt/share-point-uploader@v2.3
     #   if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
     #   with:
     #     sp_url: https://xinbyte.sharepoint.com/:f:/r/sites/OpenWrt
@@ -333,7 +333,7 @@ jobs:
     #     file: openwrt/bin/Firmware/${{ env.SP_LEGACY_VDI }}
 
     # - name: 8 Upload SP_LEGACY_VHDX to SharePoint
-    #   uses: xopenwrt/share-point-uploader@v2.2
+    #   uses: xopenwrt/share-point-uploader@v2.3
     #   if: env.SharePoint=='true' && !cancelled() && env.Result == 'true'
     #   with:
     #     sp_url: https://xinbyte.sharepoint.com/:f:/r/sites/OpenWrt
