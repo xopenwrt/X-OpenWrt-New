@@ -250,6 +250,9 @@ jobs:
         cd openwrt
         source $GITHUB_WORKSPACE/Scripts/AutoBuild_Function.sh
         Firmware_Diy_End
+        cd ..
+        mkdir ${{ steps.date.outputs.date }}
+        cp openwrt/bin/Firmware/* ./${{ steps.date.outputs.date }} -r
 
     - name: Upload Firmware to Artifacts
       uses: actions/upload-artifact@main
