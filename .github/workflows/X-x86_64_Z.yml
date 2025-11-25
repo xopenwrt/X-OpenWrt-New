@@ -301,7 +301,7 @@ jobs:
         echo SP_LEGACY_VHDX=$(echo $SP_LEGACY_VHDX) >> $GITHUB_ENV
 
     - name: 1 Upload SP_UEFI_VMDK to SharePoint
-      uses: koraykoska/s3-upload-github-action@master
+      uses: xopenwrt/s3-upload-github-action@master
       env:
         FILE: ./openwrt/bin/Firmware/${{ env.SP_UEFI_IMG_GZ }}
         S3_ENDPOINT: 's3.openwrt.115115.xyz'
@@ -310,7 +310,7 @@ jobs:
         S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
 
     - name:  2 Upload SP_UEFI_VMDK to SharePoint
-      uses: koraykoska/s3-upload-github-action@master
+      uses: xopenwrt/s3-upload-github-action@master
       env:
         FILE: ./openwrt/bin/Firmware/${{ env.SP_UEFI_VMDK }}
         S3_ENDPOINT: 's3.openwrt.115115.xyz'
@@ -341,7 +341,7 @@ jobs:
     #     file: openwrt/bin/Firmware/${{ env.SP_UEFI_VHDX }}
 
     - name:  5 Upload SP_LEGACY_IMG_GZ to SharePoint
-      uses: koraykoska/s3-upload-github-action@master
+      uses: xopenwrt/s3-upload-github-action@master
       env:
         FILE: ./openwrt/bin/Firmware/${{ env.SP_LEGACY_IMG_GZ }}
         S3_ENDPOINT: 's3.openwrt.115115.xyz'
@@ -350,7 +350,7 @@ jobs:
         S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
 
     - name:  6 Upload SP_LEGACY_VMDK to SharePoint
-      uses: koraykoska/s3-upload-github-action@master
+      uses: xopenwrt/s3-upload-github-action@master
       env:
         FILE: ./openwrt/bin/Firmware/${{ env.SP_LEGACY_VMDK }}
         S3_ENDPOINT: 's3.openwrt.115115.xyz'
