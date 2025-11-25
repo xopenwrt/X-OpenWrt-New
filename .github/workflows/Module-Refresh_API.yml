@@ -40,3 +40,12 @@ jobs:
         file_glob: true
         tag: AutoUpdate
         overwrite: true
+
+    - name: Upload API to Github SharePoint
+      uses: koraykoska/s3-upload-github-action@master
+      env:
+        FILE: ./API
+        S3_ENDPOINT: 's3.openwrt.115115.xyz'
+        S3_BUCKET: ${{ secrets.S3_BUCKET }}
+        S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
+        S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
