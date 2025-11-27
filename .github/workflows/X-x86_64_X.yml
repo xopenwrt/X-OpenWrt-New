@@ -313,7 +313,7 @@ jobs:
     - name: 1 Upload SP_UEFI_VMDK to SharePoint
       uses: xopenwrt/s3-upload-github-action@master
       env:
-        FILE: ./openwrt/bin/Firmware/${{ env.SP_UEFI_IMG_GZ }}
+        FILE: ./${{ steps.date.outputs.date }}/${{ env.SP_UEFI_IMG_GZ }}
         S3_ENDPOINT: 's3.openwrt.115115.xyz'
         S3_BUCKET: ${{ secrets.S3_BUCKET }}
         S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
@@ -322,7 +322,7 @@ jobs:
     - name:  2 Upload SP_UEFI_VMDK to SharePoint
       uses: xopenwrt/s3-upload-github-action@master
       env:
-        FILE: ./openwrt/bin/Firmware/${{ env.SP_UEFI_VMDK }}
+        FILE: ./${{ steps.date.outputs.date }}/${{ env.SP_UEFI_VMDK }}
         S3_ENDPOINT: 's3.openwrt.115115.xyz'
         S3_BUCKET: ${{ secrets.S3_BUCKET }}
         S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
@@ -331,7 +331,7 @@ jobs:
     - name:  5 Upload SP_LEGACY_IMG_GZ to SharePoint
       uses: xopenwrt/s3-upload-github-action@master
       env:
-        FILE: ./openwrt/bin/Firmware/${{ env.SP_LEGACY_IMG_GZ }}
+        FILE: ./${{ steps.date.outputs.date }}/${{ env.SP_LEGACY_IMG_GZ }}
         S3_ENDPOINT: 's3.openwrt.115115.xyz'
         S3_BUCKET: ${{ secrets.S3_BUCKET }}
         S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
@@ -340,7 +340,7 @@ jobs:
     - name:  6 Upload SP_LEGACY_VMDK to SharePoint
       uses: xopenwrt/s3-upload-github-action@master
       env:
-        FILE: ./openwrt/bin/Firmware/${{ env.SP_LEGACY_VMDK }}
+        FILE: ./${{ steps.date.outputs.date }}/${{ env.SP_LEGACY_VMDK }}
         S3_ENDPOINT: 's3.openwrt.115115.xyz'
         S3_BUCKET: ${{ secrets.S3_BUCKET }}
         S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
