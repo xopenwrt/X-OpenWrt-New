@@ -67,7 +67,7 @@ jobs:
       with:
         root-reserve-mb: 512
         swap-size-mb: 512
-        temp-reserve-mb: 256
+        temp-reserve-mb: 1024
         remove-dotnet: 'true'
         remove-android: 'true'
 
