@@ -113,10 +113,12 @@ EOF
 			patch < ${CustomFiles}/d-team_newifi-d2_mt76_dualband.patch -p1 -d ${WORK}
 		;;
 		x86_64)
+			rm -rf ${FEEDS_PKG}/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,v2ray-plugin,xray-plugin,geoview,shadow-tls}
+			rm -rf ${FEEDS_LUCI}/applications/luci-app-passwall
 			Copy ${CustomFiles}/Depends/cpuset ${BASE_FILES}/bin
-			AddPackage git passwall-depends openwrt-passwall-packages xiaorouji main
-			AddPackage git passwall-luci openwrt-passwall xiaorouji main
-			AddPackage git passwall2-luci openwrt-passwall2 xiaorouji main
+			AddPackage git passwall-packages openwrt-passwall-packages Openwrt-Passwall main
+			AddPackage git passwall-luci openwrt-passwall Openwrt-Passwall main
+			AddPackage git passwall2-luci openwrt-passwall2 Openwrt-Passwall main
 			AddPackage git other luci-app-dockerman lisaac master
 			rm -rf packages/lean/autocore # May Can Delete
 			AddPackage git lean autocore-modify xopenwrt master
