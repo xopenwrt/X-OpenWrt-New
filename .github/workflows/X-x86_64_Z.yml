@@ -209,7 +209,7 @@ jobs:
       run: |
         cd openwrt
         rm -rf package/feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,v2ray-plugin,xray-plugin,geoview,shadow-tls}
-			  rm -rf package/feeds/luci/applications/luci-app-passwall
+        rm -rf package/feeds/luci/applications/luci-app-passwall
         rm package/feeds/packages/adguardhome -rf
         rm feeds/packages/net/adguardhome -rf
         ln -s ../../../package/other/AutoBuild-Packages/adguardhome package/feeds/packages/adguardhome
