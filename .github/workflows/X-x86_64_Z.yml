@@ -212,6 +212,7 @@ jobs:
         rm -rf package/feeds/luci/applications/luci-app-passwall
         rm package/feeds/packages/adguardhome -rf
         rm feeds/packages/net/adguardhome -rf
+        rm feeds/luci/applications/luci-app-adguardhome -rf
         ln -s ../../../package/other/AutoBuild-Packages/adguardhome package/feeds/packages/adguardhome
         make -j4 | tee ./build_log.log || make -j1 V=s
         # 2024.03.03 mosdns build fail by golang 1.22
