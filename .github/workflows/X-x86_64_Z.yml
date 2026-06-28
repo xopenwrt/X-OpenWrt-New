@@ -319,7 +319,7 @@ jobs:
     - name:  2 Upload SP_UEFI_VMDK to SharePoint
       uses: xopenwrt/s3-upload-github-action@master
       env:
-        FILE: ./${{ steps.date.outputs.date }}e/${{ env.SP_UEFI_VMDK }}
+        FILE: ./${{ steps.date.outputs.date }}/${{ env.SP_UEFI_VMDK }}
         S3_ENDPOINT: 's3.openwrt.115115.xyz'
         S3_BUCKET: ${{ secrets.S3_BUCKET }}
         S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
