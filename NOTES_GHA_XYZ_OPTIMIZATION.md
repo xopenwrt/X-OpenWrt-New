@@ -30,6 +30,15 @@ Related directories:
 - `Scripts`: shared build/env/update helper scripts.
 - `CustomFiles`: patches, dependency files and Kconfig fragments injected by scripts.
 
+## Current Progress
+
+Updated: 2026-06-29
+
+- Active work branch: `ai`, tracking `origin/ai`.
+- Completed backlog items in the current AI task series: #1-#12, #14-#16, #20-#22, #27, #28, and #30.
+- The current continuation task is #35: document the X/Y/Z x86_64 config intent and add a config optimization todo list.
+- Larger unresolved items remain below; prefer one scoped commit per backlog item unless batching is requested.
+
 ## Optimization Backlog
 
 ### High Priority
@@ -235,6 +244,11 @@ Related directories:
     - Files: `Configs/x86_64-X`, `Configs/x86_64-Y`, `Configs/x86_64-Z`
     - Problem: commented `KERNEL_PATCHVER` lines do not affect OpenWrt config and can mislead later edits.
     - Suggested fix: remove stale comments or move kernel selection into the correct build mechanism.
+
+35. Document X/Y/Z config intent and optimization todos.
+    - Files: `Configs/x86_64-X`, `Configs/x86_64-Y`, `Configs/x86_64-Z`, `NOTES_X86_CONFIG_OPTIMIZATION.md`
+    - Problem: the three x86_64 profiles do not clearly state their intended role, shared maintenance rules, or follow-up cleanup path.
+    - Suggested fix: add safe comment headers to each config and maintain a dedicated todo list for config-specific optimization work.
 
 ## Suggested First Fix Batch
 

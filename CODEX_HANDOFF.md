@@ -9,9 +9,11 @@ This file is the stable restart point for future Codex sessions in this reposito
 ## Current State
 
 - Repository: `X-OpenWrt-New`
-- Branch: `master`
+- Branch: `ai`
+- Remote tracking branch: `origin/ai`
 - Latest completed task batch: continued the GitHub Actions X/Y/Z optimization backlog through multiple high-priority and low-risk maintainability/script items.
-- Latest task commit at handoff update time: `5f3650c validate workflow dispatch inputs`
+- Latest task commit at handoff update time: `1629605 docs update codex handoff`
+- Current requested task: update the todo handoff, then add comments to `Configs/x86_64-X`, `Configs/x86_64-Y`, and `Configs/x86_64-Z`, plus a dedicated config optimization todo list.
 - Backlog file: `NOTES_GHA_XYZ_OPTIMIZATION.md`
 
 ## Completed Backlog Items
@@ -43,6 +45,10 @@ Completed in this task series:
 Each code fix has a corresponding `AI_CHANGELOG_*.md` file.
 
 ## Remaining Work
+
+Immediate continuation:
+
+- #35: Document the X/Y/Z x86_64 config intent. Add header comments to `Configs/x86_64-X`, `Configs/x86_64-Y`, and `Configs/x86_64-Z`, then list config-specific optimization points as todos.
 
 The next unresolved backlog items need broader design or more careful behavior decisions:
 
