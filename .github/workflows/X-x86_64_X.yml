@@ -65,7 +65,7 @@ jobs:
     - name: Get current date & Set env
       id: date
       run: |
-        echo "::set-output name=date::$(date +'%Y-%m-%d')"
+        echo "date=$(date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
         echo "Release=${{ github.event.inputs.Release }}" >> $GITHUB_ENV
         echo "SharePoint=${{ github.event.inputs.SharePoint }}" >> $GITHUB_ENV
         echo "data2=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
