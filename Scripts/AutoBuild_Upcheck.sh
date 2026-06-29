@@ -94,7 +94,8 @@ done < "build_package.log"
 
         # export NOW_DATA_VERSION=${{env.NOW_DATA_VERSION}}
         # export GITHUB_WORKSPACE=$GITHUB_WORKSPACE
-wget https://api.github.com/repos/X-OpenWrt/X-OpenWrt-Dev/releases -O releases.json
+RELEASE_REPOSITORY="${GITHUB_REPOSITORY:-X-OpenWrt/X-OpenWrt-Dev}"
+wget "https://api.github.com/repos/${RELEASE_REPOSITORY}/releases" -O releases.json
 cat releases.json | jq  '.[].tag_name' -r > version.old
 echo ${NOW_DATA_VERSION}
 diff_version=v2023-1-1
@@ -111,7 +112,7 @@ do
                 fi
         fi
 done < "version.old"
-wget -O ${1}_build_pkg_ver_old.log https://github.com/X-OpenWrt/X-OpenWrt-Dev/releases/download/${diff_version}/${1}_build_pkg_ver.log
+wget -O ${1}_build_pkg_ver_old.log "https://github.com/${RELEASE_REPOSITORY}/releases/download/${diff_version}/${1}_build_pkg_ver.log"
 
 # Check_build_Version "LINUX_VERSION=${X_LINUX_VERSION}" ${1}
 echo "Tag:${1} Vesion Check" >> ${1}_build_pkg_up.log 
