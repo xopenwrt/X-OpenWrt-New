@@ -185,16 +185,20 @@ jobs:
       run: |
         chmod +x Scripts/AutoBuild_*.sh
         cd openwrt
+        cp $GITHUB_WORKSPACE/Configs/$CONFIG_FILE .config
         if [ "${{ env.CACHE_ACCELERATE }}" == true ]
         then
-            echo -e "\nCONFIG_DEVEL=y\nCONFIG_CCACHE=n\n" >> $GITHUB_WORKSPACE/Configs/$CONFIG_FILE
+            echo -e "\nCONFIG_DEVEL=y\nCONFIG_CCACHE=n\n" >> .config
         fi
-        cp $GITHUB_WORKSPACE/Configs/$CONFIG_FILE .config
         source $GITHUB_WORKSPACE/Scripts/AutoBuild_DiyScript.sh
         source $GITHUB_WORKSPACE/Scripts/AutoBuild_Function.sh
         make defconfig
         Firmware_Diy_Before
         rm -f .config && cp $GITHUB_WORKSPACE/Configs/$CONFIG_FILE .config
+        if [ "${{ env.CACHE_ACCELERATE }}" == true ]
+        then
+            echo -e "\nCONFIG_DEVEL=y\nCONFIG_CCACHE=n\n" >> .config
+        fi
         Firmware_Diy_Main
         Firmware_Diy
         Firmware_Diy_Other
