@@ -155,7 +155,6 @@ jobs:
         sudo chown $USER:$GROUPS /workdir
         if [ "${{ env.DELETE_USELESS_FILES }}" == true ]
         then
-          docker images
           sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php
           sudo -E apt-get -y autoremove --purge
           sudo -E apt-get clean
@@ -271,7 +270,6 @@ jobs:
         cd openwrt
         source $GITHUB_WORKSPACE/Scripts/AutoBuild_Function.sh
         Firmware_Diy_End
-        ls bin/Firmware
         cd ..
         mkdir ${{ steps.date.outputs.date }}
         cp openwrt/bin/Firmware/* ./${{ steps.date.outputs.date }} -r
@@ -415,7 +413,6 @@ jobs:
       if: env.Release=='true' && env.UPLOAD_RELEASES == 'true' && env.Result == 'true' && !cancelled()
       run: |
         rm openwrt/bin/Firmware/AutoBuild-*.v* -rf
-        ls openwrt/bin/Firmware
 
     - name: Upload Firmware to Github Release
       uses: svenstaro/upload-release-action@v2
