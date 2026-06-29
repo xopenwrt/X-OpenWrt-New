@@ -130,7 +130,7 @@ Firmware_Diy_Main() {
 	if [[ ${AutoBuild_Features} == true ]]
 	then
 		AddPackage git other AutoBuild-Packages xopenwrt master
-		echo -e "\nCONFIG_PACKAGE_luci-app-autoupdate=y" >> ${CONFIG_FILE}
+		echo -e "\nCONFIG_PACKAGE_luci-app-autoupdate=y" >> ${CONFIG_TEMP}
 		for i in ${GITHUB_ENV} $(PKG_Finder d package AutoBuild-Packages)/autoupdate/files/etc/autoupdate/default
 		do
 			cat >> ${i} <<EOF
