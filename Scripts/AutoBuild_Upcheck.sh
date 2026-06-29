@@ -96,22 +96,13 @@ done < "build_package.log"
         # export GITHUB_WORKSPACE=$GITHUB_WORKSPACE
 RELEASE_REPOSITORY="${GITHUB_REPOSITORY:-X-OpenWrt/X-OpenWrt-Dev}"
 wget "https://api.github.com/repos/${RELEASE_REPOSITORY}/releases" -O releases.json
-cat releases.json | jq  '.[].tag_name' -r > version.old
+jq -r '.[].tag_name' releases.json | grep -E '^v[0-9]{4}-[0-9]{2}-[0-9]{2}$' | sort -V > version.old
 echo ${NOW_DATA_VERSION}
-diff_version=v2023-1-1
-while read -r last_version
-do
-        if [[ "$last_version" != "AutoUpdate" ]]
-        then
-                if [[ "$last_version" < ${NOW_DATA_VERSION} ]]
-                then
-                        if [[ "$last_version" > ${diff_version} ]]
-                        then
-                                diff_version=$last_version
-                        fi
-                fi
-        fi
-done < "version.old"
+diff_version=$(awk -v current="${NOW_DATA_VERSION}" '$0 < current { previous=$0 } END { print previous }' version.old)
+if [[ -z "${diff_version}" ]]
+then
+        diff_version=v2023-01-01
+fi
 wget -O ${1}_build_pkg_ver_old.log "https://github.com/${RELEASE_REPOSITORY}/releases/download/${diff_version}/${1}_build_pkg_ver.log"
 
 # Check_build_Version "LINUX_VERSION=${X_LINUX_VERSION}" ${1}
