@@ -237,6 +237,7 @@ jobs:
 
 
     - name: Check Build Update
+      if: env.Result == 'true' && env.Release == 'true' && env.UPLOAD_RELEASES == 'true' && !cancelled()
       run: |
         export NOW_DATA_VERSION=${{env.NOW_DATA_VERSION}}
         export GITHUB_WORKSPACE=$GITHUB_WORKSPACE
