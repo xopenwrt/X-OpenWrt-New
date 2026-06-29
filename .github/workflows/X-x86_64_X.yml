@@ -13,10 +13,12 @@ on:
     inputs:
       Release:
         description: '是否上传到Github'
-        default: 'true'
+        type: boolean
+        default: true
       SharePoint:
         description: '是否上传到SharePoint'
-        default: 'true'
+        type: boolean
+        default: true
       Tempoary_IP:
         description: '固件 IP 地址 [可选]'
         default: '192.168.2.200'
@@ -78,8 +80,8 @@ jobs:
       id: date
       run: |
         echo "date=$(date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
-        echo "Release=${{ github.event.inputs.Release }}" >> $GITHUB_ENV
-        echo "SharePoint=${{ github.event.inputs.SharePoint }}" >> $GITHUB_ENV
+        echo "Release=${{ github.event.inputs.Release || 'true' }}" >> $GITHUB_ENV
+        echo "SharePoint=${{ github.event.inputs.SharePoint || 'true' }}" >> $GITHUB_ENV
         echo "data2=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
         echo "NOW_DATA_VERSION=v$(date +'%Y-%m-%d')" >> $GITHUB_ENV
         if [ "${{ env.DELETE_USELESS_FILES }}" == true ]
