@@ -64,6 +64,10 @@ env:
   DELETE_OLD_WORKFLOW: true
 # Cache 加速编译
   CACHE_ACCELERATE: true
+# 下载并行数
+  DOWNLOAD_JOBS: 8
+# 编译并行数
+  BUILD_JOBS: 4
 ### 结束
 
 jobs:
@@ -214,7 +218,7 @@ jobs:
         cd openwrt
         ./scripts/feeds install -a
         make defconfig
-        make download -j8
+        make download -j${DOWNLOAD_JOBS}
 
     - name: Build OpenWrt
       run: |
@@ -228,7 +232,7 @@ jobs:
         # 2024.03.03 mosdns build fail by golang 1.22
         sed -i "s/CGO_ENABLED=0/CGO_ENABLED=1/g" feeds/packages/net/mosdns/Makefile
         set -o pipefail
-        if make -j4 2>&1 | tee ./build_log.log
+        if make -j${BUILD_JOBS} 2>&1 | tee ./build_log.log
         then
             build_status=0
         else
