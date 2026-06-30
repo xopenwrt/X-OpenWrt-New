@@ -252,7 +252,14 @@ jobs:
         cd openwrt
         ./scripts/feeds install -a
         make defconfig
-        make download -j${DOWNLOAD_JOBS}
+        mkdir -p dl
+        if ! make download -j${DOWNLOAD_JOBS}
+        then
+            echo "Parallel package download failed; retrying serially with verbose output."
+            find dl -type f -size -1024c -print -delete
+            make download -j1 V=s
+        fi
+        find dl -type f -size -1024c -print -delete
 
     - name: Build OpenWrt
       run: |

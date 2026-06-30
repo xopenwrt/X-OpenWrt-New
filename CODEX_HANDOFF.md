@@ -13,7 +13,7 @@ This file is the stable restart point for future Codex sessions in this reposito
 - Remote tracking branch: `origin/ai`
 - Latest completed task batch: continued the GitHub Actions X/Y/Z optimization backlog through multiple high-priority and low-risk maintainability/script items.
 - Latest task commit at handoff update time: `1629605 docs update codex handoff`
-- Current requested task: update the todo handoff, then add comments to `Configs/x86_64-X`, `Configs/x86_64-Y`, and `Configs/x86_64-Z`, plus a dedicated config optimization todo list.
+- Current requested task: fixed a reported `package/boot/grub2` EFI failure during `make download` by adding a serial verbose retry path; resume #35 after this fix is committed.
 - Backlog file: `NOTES_GHA_XYZ_OPTIMIZATION.md`
 
 ## Completed Backlog Items
@@ -48,6 +48,7 @@ Each code fix has a corresponding `AI_CHANGELOG_*.md` file.
 
 Immediate continuation:
 
+- Build failure fix completed: X/Y/Z pre-download now retries serially with `V=s` after a parallel package download failure, and cleans tiny incomplete files from `dl/`.
 - #35: Document the X/Y/Z x86_64 config intent. Add header comments to `Configs/x86_64-X`, `Configs/x86_64-Y`, and `Configs/x86_64-Z`, then list config-specific optimization points as todos.
 
 The next unresolved backlog items need broader design or more careful behavior decisions:
