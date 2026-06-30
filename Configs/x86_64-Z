@@ -1,3 +1,16 @@
+# X-OpenWrt x86_64-Z compile config notes
+# Purpose: Z profile for generic x86_64 firmware. It is the compact
+# Passwall/AdGuardHome/Diskman/Netdata profile and also enables Image
+# Builder options.
+# Maintenance:
+# - Keep this file limited to OpenWrt .config selections; CI-only options
+#   are appended by the workflow to openwrt/.config.
+# - Keep shared target/image/IPv6/base package choices aligned with X/Y
+#   unless a profile intentionally differs.
+# - Decide whether CONFIG_IB/CONFIG_IB_STANDALONE outputs should be
+#   uploaded, ignored, or disabled.
+# - See NOTES_X86_CONFIG_OPTIMIZATION.md for follow-up optimization todos.
+#
 # 挂载WebDav
 CONFIG_PACKAGE_davfs2=y
 # Smart DNS

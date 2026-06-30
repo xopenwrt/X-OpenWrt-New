@@ -12,8 +12,8 @@ This file is the stable restart point for future Codex sessions in this reposito
 - Branch: `ai`
 - Remote tracking branch: `origin/ai`
 - Latest completed task batch: continued the GitHub Actions X/Y/Z optimization backlog through multiple high-priority and low-risk maintainability/script items.
-- Latest task commit at handoff update time: `1629605 docs update codex handoff`
-- Current requested task: fixed a reported `package/boot/grub2` EFI failure during `make download` by adding a serial verbose retry path; resume #35 after this fix is committed.
+- Latest task context: package download retry fix completed; #35 config documentation task completed in the current working series.
+- Current requested task: #35 completed by documenting X/Y/Z x86_64 config intent and adding `NOTES_X86_CONFIG_OPTIMIZATION.md`.
 - Backlog file: `NOTES_GHA_XYZ_OPTIMIZATION.md`
 
 ## Completed Backlog Items
@@ -41,6 +41,8 @@ Completed in this task series:
 - #27: Fixed `Get_Release_Info` command substitution bug.
 - #28: Made diagnostic external IP lookup non-blocking.
 - #30: Improved release tag comparison.
+- #35: Added x86_64 X/Y/Z config intent comments and a dedicated config optimization todo list.
+- Unplanned: Added serial verbose retry for X/Y/Z package downloads after a parallel `make download` failure.
 
 Each code fix has a corresponding `AI_CHANGELOG_*.md` file.
 
@@ -48,8 +50,7 @@ Each code fix has a corresponding `AI_CHANGELOG_*.md` file.
 
 Immediate continuation:
 
-- Build failure fix completed: X/Y/Z pre-download now retries serially with `V=s` after a parallel package download failure, and cleans tiny incomplete files from `dl/`.
-- #35: Document the X/Y/Z x86_64 config intent. Add header comments to `Configs/x86_64-X`, `Configs/x86_64-Y`, and `Configs/x86_64-Z`, then list config-specific optimization points as todos.
+- Config-specific cleanup follow-ups now live in `NOTES_X86_CONFIG_OPTIMIZATION.md`. Treat those todos as the source of truth for x86_64 config cleanup.
 
 The next unresolved backlog items need broader design or more careful behavior decisions:
 

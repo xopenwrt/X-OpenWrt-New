@@ -1,3 +1,16 @@
+# X-OpenWrt x86_64-X compile config notes
+# Purpose: X profile for generic x86_64 firmware. It includes SmartDNS,
+# Docker, WiFi firmware/drivers, IPv6, common storage/network modules,
+# and a broader LuCI package set.
+# Maintenance:
+# - Keep this file limited to OpenWrt .config selections; CI-only options
+#   are appended by the workflow to openwrt/.config.
+# - Keep shared target/image/IPv6/base package choices aligned with Y/Z
+#   unless a profile intentionally differs.
+# - Use OpenWrt scripts/diffconfig.sh after a successful build before
+#   shrinking or reorganizing this profile.
+# - See NOTES_X86_CONFIG_OPTIMIZATION.md for follow-up optimization todos.
+#
 # My Changes
 # 挂载WebDav
 CONFIG_PACKAGE_davfs2=y

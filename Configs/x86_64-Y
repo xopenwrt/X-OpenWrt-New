@@ -1,3 +1,16 @@
+# X-OpenWrt x86_64-Y compile config notes
+# Purpose: Y profile for generic x86_64 firmware. It keeps SmartDNS,
+# Passwall, AdGuardHome, Docker/Diskman, IPv6, common network services,
+# and the standard x86 image formats.
+# Maintenance:
+# - Keep this file limited to OpenWrt .config selections; CI-only options
+#   are appended by the workflow to openwrt/.config.
+# - Keep shared target/image/IPv6/base package choices aligned with X/Z
+#   unless a profile intentionally differs.
+# - Use OpenWrt scripts/diffconfig.sh after a successful build before
+#   shrinking or reorganizing this profile.
+# - See NOTES_X86_CONFIG_OPTIMIZATION.md for follow-up optimization todos.
+#
 # 挂载WebDav
 CONFIG_PACKAGE_davfs2=y
 # Smart DNS

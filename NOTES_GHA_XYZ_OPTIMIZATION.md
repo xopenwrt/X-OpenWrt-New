@@ -35,8 +35,9 @@ Related directories:
 Updated: 2026-06-29
 
 - Active work branch: `ai`, tracking `origin/ai`.
-- Completed backlog items in the current AI task series: #1-#12, #14-#16, #20-#22, #27, #28, and #30.
-- The current continuation task is #35: document the X/Y/Z x86_64 config intent and add a config optimization todo list.
+- Completed backlog items in the current AI task series: #1-#12, #14-#16, #20-#22, #27, #28, #30, and #35.
+- Config-specific cleanup follow-ups now live in `NOTES_X86_CONFIG_OPTIMIZATION.md`.
+- Unplanned build fix added a serial verbose retry path for `make download` after a reported `package/boot/grub2` EFI package download failure.
 - Larger unresolved items remain below; prefer one scoped commit per backlog item unless batching is requested.
 
 ## Optimization Backlog
@@ -249,6 +250,7 @@ Updated: 2026-06-29
     - Files: `Configs/x86_64-X`, `Configs/x86_64-Y`, `Configs/x86_64-Z`, `NOTES_X86_CONFIG_OPTIMIZATION.md`
     - Problem: the three x86_64 profiles do not clearly state their intended role, shared maintenance rules, or follow-up cleanup path.
     - Suggested fix: add safe comment headers to each config and maintain a dedicated todo list for config-specific optimization work.
+    - Status: completed; follow-up cleanup todos are tracked in `NOTES_X86_CONFIG_OPTIMIZATION.md`.
 
 ## Suggested First Fix Batch
 
